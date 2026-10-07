@@ -1,5 +1,5 @@
-from .BaseRepository import BaseRepository
-from models.Website import Website
+from crud.repos.BaseRepository import BaseRepository
+from crud.models.Website import Website
 
 import uuid
 
@@ -10,7 +10,7 @@ class WebsitesRepository(BaseRepository):
     
     def apply_migrations(self):
         super().apply_migrations('''
-            CREATE TABLE IF NOT EXISTS Website (
+            CREATE TABLE IF NOT EXISTS Websites (
                 id TEXT PRIMARY KEY,
                 name TEXT,
                 description TEXT,
@@ -20,7 +20,7 @@ class WebsitesRepository(BaseRepository):
 
     # Retrieves all 'Website' entries.
     def get_all(self):
-        data = self.sql_get_all(f'SELECT * FROM Website')
+        data = self.sql_get_all(f'SELECT * FROM Websites')
         
         return [Website.to_dict(row) for row in data]
 
@@ -28,10 +28,10 @@ class WebsitesRepository(BaseRepository):
     def add(self, data: dict):
         data['id'] = str(uuid.uuid4())
 
-        self.sql_command(f'INSERT INTO Website (id, name, description, domain) VALUES ("{data['id']}", "{data['name']}", "{data['description']}", "{data['domain']}")')
+        self.sql_command(f'INSERT INTO Websites (id, name, description, domain) VALUES ("{data['id']}", "{data['name']}", "{data['description']}", "{data['domain']}")')
 
         return data['id']
 
     # Deletes a 'Website' entry by its ID.
     def delete_by_id(self, id: str):
-        self.sql_command(f'DELETE FROM Website WHERE id = "{id}"')
+        self.sql_command(f'DELETE FROM Websites WHERE id = "{id}"')
