@@ -1,20 +1,38 @@
 # Runs the CRUD operations for the application.
-from crud.routes.RestAPIs import get_restapis, create_restapi
-from crud.routes.Websites import get_websites, create_website
-from crud.routes.MCPServers import get_mcpservers, create_mcpserver
+from crud.routes.RestAPIs import get_restapis, add_restapi, edit_restapi, delete_restapi
+from crud.routes.Websites import get_websites, add_website, edit_website, delete_website
+from crud.routes.MCPServers import get_mcpservers, add_mcpserver, edit_mcpserver, delete_mcpserver
+from crud.routes.LLMs import get_llms, add_llm, edit_llm, delete_llm
+from crud.routes.Agents import get_agents, add_agent, edit_agent, delete_agent
 
 from flask import Flask
 
 app = Flask(__name__)
 
 app.add_url_rule('/restapis', 'get_restapis', get_restapis, methods=['GET'])
-app.add_url_rule('/restapis', 'create_restapi', create_restapi, methods=['POST'])
+app.add_url_rule('/restapis', 'add_restapi', add_restapi, methods=['POST'])
+app.add_url_rule('/restapis/<id>', 'edit_restapi', edit_restapi, methods=['PUT'])
+app.add_url_rule('/restapis/<id>', 'delete_restapi', delete_restapi, methods=['DELETE'])
 
 app.add_url_rule('/websites', 'get_websites', get_websites, methods=['GET'])
-app.add_url_rule('/websites', 'create_website', create_website, methods=['POST'])
+app.add_url_rule('/websites', 'add_website', add_website, methods=['POST'])
+app.add_url_rule('/websites/<id>', 'edit_website', edit_website, methods=['PUT'])
+app.add_url_rule('/websites/<id>', 'delete_website', delete_website, methods=['DELETE'])
 
 app.add_url_rule('/mcpservers', 'get_mcpservers', get_mcpservers, methods=['GET'])
-app.add_url_rule('/mcpservers', 'create_mcpserver', create_mcpserver, methods=['POST'])
+app.add_url_rule('/mcpservers', 'add_mcpserver', add_mcpserver, methods=['POST'])
+app.add_url_rule('/mcpservers/<id>', 'edit_mcpserver', edit_mcpserver, methods=['PUT'])
+app.add_url_rule('/mcpservers/<id>', 'delete_mcpserver', delete_mcpserver, methods=['DELETE'])
+
+app.add_url_rule('/llms', 'get_llms', get_llms, methods=['GET'])
+app.add_url_rule('/llms', 'add_llm', add_llm, methods=['POST'])
+app.add_url_rule('/llms/<id>', 'edit_llm', edit_llm, methods=['PUT'])
+app.add_url_rule('/llms/<id>', 'delete_llm', delete_llm, methods=['DELETE'])
+
+app.add_url_rule('/agents', 'get_agents', get_agents, methods=['GET'])
+app.add_url_rule('/agents', 'add_agent', add_agent, methods=['POST'])
+app.add_url_rule('/agents/<id>', 'edit_agent', edit_agent, methods=['PUT'])
+app.add_url_rule('/agents/<id>', 'delete_agent', delete_agent, methods=['DELETE'])
 
 @app.route('/')
 def index():

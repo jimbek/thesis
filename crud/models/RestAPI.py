@@ -1,4 +1,4 @@
-# Describes the table 'RestAPI'.
+# Describes the model for a RestAPI entity.
 class RestAPI:
     def __init__(self, id: str, name: str, description: str, domain: str, openapi_spec: str):
         self.id = id

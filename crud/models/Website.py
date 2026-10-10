@@ -1,4 +1,4 @@
-# Describes the table 'Website'.
+# Describes the model for a Website entity.
 class Website:
     def __init__(self, id: str, name: str, description: str, domain: str):
         self.id = id

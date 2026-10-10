@@ -14,7 +14,7 @@ def get_restapis():
         return f"Internal server error: {error}", 500
 
 # POST /restapis - Create a REST API.
-def create_restapi():
+def add_restapi():
     try:
         data = request.get_json()
 
@@ -25,5 +25,24 @@ def create_restapi():
             return "Invalid parameters", 400
         
         return repo.add(data), 201
+    except Exception as error:
+        return f"Internal server error: {error}", 500
+
+# PUT /restapis/<id> - Update a REST API by its ID.
+def edit_restapi(id):
+    try:
+        data = request.get_json()
+
+        if data is None:
+            return "Body is missing", 400
+        
+        return repo.edit(id, data), 200
+    except Exception as error:
+        return f"Internal server error: {error}", 500
+
+# DELETE /restapis/<id> - Delete a REST API by its ID.
+def delete_restapi(id):
+    try:
+        return repo.delete(id), 200
     except Exception as error:
         return f"Internal server error: {error}", 500

@@ -14,7 +14,7 @@ def get_websites():
         return f"Internal server error: {error}", 500
 
 # POST /websites - Create a website.
-def create_website():
+def add_website():
     try:
         data = request.get_json()
 
@@ -27,3 +27,22 @@ def create_website():
         return repo.add(data), 201
     except Exception as error:
         return f"Internal server error: {error}", 500
+
+# PUT /websites/<id> - Update a website by its ID.
+def edit_website(id):
+    try:
+        data = request.get_json()
+
+        if data is None:
+            return "Body is missing", 400
+        
+        return repo.edit(id, data), 200
+    except Exception as error:
+        return f"Internal server error: {error}", 500
+
+# DELETE /websites/<id> - Delete a website by its ID.
+def delete_website(id):
+    try:
+        return repo.delete(id), 200
+    except Exception as error:
+        return f"Internal server error: {error}", 500   
