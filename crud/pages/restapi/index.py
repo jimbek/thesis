@@ -26,22 +26,20 @@ with container:
         unsafe_allow_html=True,
     )
 
-    left, right = container.columns(2)
-    with left:
-        container.header("Rest APIs", divider="gray")
-    with right:
-        if container.button("New +", type="primary"):
-            st.switch_page("crud/pages/restapi/add_rest_api.py")
+    container.header("Rest APIs", divider="gray")
+    
+    if container.button("New +", type="primary"):
+        st.switch_page("crud/pages/restapi/add_rest_api.py")
 
-    header = container.columns([1, 3, 1, 1.5, 0.5])
+    header = container.columns([1, 2.5, 1.5, 1.5, 0.5])
     header[0].markdown("**Όνομα**")
     header[1].markdown("**Περιγραφή**")
     header[2].markdown("**Domain**")
-    header[3].markdown("**OpenAPI**")
+    header[3].markdown("**Τεκμηρίωση**")
     header[4].markdown("**Ενέργειες**")
 
     for api in repo.get_all():
-        row = container.columns([1, 3, 1, 1.5, 0.5])
+        row = container.columns([1, 2.5, 1.5, 1.5, 0.5])
 
         row[0].markdown(api.get('name'))
         row[1].markdown(api.get('description'))

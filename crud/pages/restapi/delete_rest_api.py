@@ -17,9 +17,12 @@ global container
 container = st.container()
 
 with container:
-    if not repo.exists('id', id):
+    entry = repo.get_by_id(id)
+    if not entry:
         st.error("Δεν υπάρχει RestAPI με αυτό το ID.")
         st.stop()
+
+    st.html("Είστε σίγουροι ότι θέλετε να διαγράψετε το REST API με domain: <b>" + entry['domain'] + "</b>;")
     
     if container.button("Διαγραφή"):
         result = repo.delete(id)

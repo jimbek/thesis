@@ -21,7 +21,6 @@ class WebsitesRepository(BaseRepository):
     # Retrieves all 'Website' entries.
     def get_all(self):
         data = self.sql_get_all(f'SELECT * FROM Websites')
-        
         return [Website.to_dict(row) for row in data]
 
     # Retrieves a 'Website' entry by its ID.
@@ -33,19 +32,29 @@ class WebsitesRepository(BaseRepository):
     def add(self, data: dict):
         data['id'] = str(uuid.uuid4())
 
+        invalid = Website.to_invalid(data)
+        if invalid:
+            return invalid
+        
         self.sql_command(f'INSERT INTO Websites (id, name, description, domain) VALUES ("{data['id']}", "{data['name']}", "{data['description']}", "{data['domain']}")')
 
         return data['id']
 
     # Edits an existing 'Website' entry by its ID.
-    def edit(self, id: str, data: dict):
-        set_clause = ', '.join([f'{key} = "{value}"' for key, value in data.items()])
-        self.sql_command(f'UPDATE Websites SET {set_clause} WHERE id = "{id}"')
+    def edit(self, data: dict):
+        invalid = Website.to_invalid(data)
+        if invalid:
+            return invalid
 
-    # Checks if a 'Website' entry exists in the database by its domain.
-    def exists(self, domain: str):
-        return self.sql_get_one(f'SELECT id FROM Websites WHERE domain = "{domain}"') is not None
+        if not self.get_by_id(data['id']):
+            return {'message': 'Δεν υπάρχει Website με αυτό το ID.'}
+
+        set_clause = ', '.join([f'{key} = "{value}"' for key, value in data.items() if key != 'id'])
+        self.sql_command(f'UPDATE Websites SET {set_clause} WHERE id = "{data['id']}"')
 
     # Deletes a 'Website' entry by its ID.
     def delete(self, id: str):
+        if not self.get_by_id(id):
+            return {'message': 'Δεν υπάρχει Website με αυτό το ID.'}
+        
         self.sql_command(f'DELETE FROM Websites WHERE id = "{id}"')
