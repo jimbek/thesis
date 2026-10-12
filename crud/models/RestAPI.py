@@ -17,3 +17,29 @@ class RestAPI:
             "domain": row[3],
             "openapi_spec": row[4]
         }
+
+    # Returns a dictionary that describes an invalid RestAPI instance.
+    @staticmethod
+    def to_invalid(data: dict = None):
+        message = ""
+
+        if data is None:
+            message = "Δεν παρέχονται δεδομένα."
+
+        if data.get("id") is None or data.get("id") == "":
+            message = "Λείπει το ID."
+        elif data.get("name") is None or data.get("name") == "":
+            message = "Λείπει το Όνομα."
+        elif data.get("description") is None or data.get("description") == "":
+            message = "Λείπει η Περιγραφή."
+        elif data.get("domain") is None or data.get("domain") == "":
+            message = "Λείπει το Domain."
+        elif data.get("openapi_spec") is None or data.get("openapi_spec") == "":
+            message = "Λείπει το OpenAPI spec."
+
+        if message:
+            return {
+                "message": message
+            }
+
+        return None

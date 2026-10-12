@@ -1,9 +1,13 @@
-# This is the main page of the application.
+# This page displays the list of existing REST APIs.
+from crud.repos.RestAPIsRepository import RestAPIsRepository
+
 import streamlit as st
+
+repo = RestAPIsRepository()
 
 # Initialize a container for the page content.
 global container
-container = st.container(horizontal=True)
+container = st.container()
 
 with container:
     container.markdown(
@@ -22,9 +26,37 @@ with container:
         unsafe_allow_html=True,
     )
 
-    left, right = st.columns(2)
+    left, right = container.columns(2)
     with left:
         container.header("Rest APIs", divider="gray")
     with right:
         if container.button("New +", type="primary"):
             st.switch_page("crud/pages/restapi/add_rest_api.py")
+
+    header = container.columns([1, 3, 1, 1.5, 0.5])
+    header[0].markdown("**Όνομα**")
+    header[1].markdown("**Περιγραφή**")
+    header[2].markdown("**Domain**")
+    header[3].markdown("**OpenAPI**")
+    header[4].markdown("**Ενέργειες**")
+
+    for api in repo.get_all():
+        row = container.columns([1, 3, 1, 1.5, 0.5])
+
+        row[0].markdown(api.get('name'))
+        row[1].markdown(api.get('description'))
+        row[2].markdown(api.get('domain'))
+        row[3].markdown(api.get('openapi_spec'))
+
+        action_buttons = row[4].columns(2)
+        action_buttons[0].page_link(
+            "crud/pages/restapi/edit_rest_api.py",
+            label = "",
+            icon = ":material/edit:",
+            query_params = {"id": api['id']})
+
+        action_buttons[1].page_link(
+            "crud/pages/restapi/delete_rest_api.py",
+            label = "",
+            icon = ":material/delete:",
+            query_params = {"id": api['id']})
