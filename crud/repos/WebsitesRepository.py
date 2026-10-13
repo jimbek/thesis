@@ -35,6 +35,9 @@ class WebsitesRepository(BaseRepository):
         invalid = Website.to_invalid(data)
         if invalid:
             return invalid
+
+        if self.exists('domain', data['domain']):
+            return {'message': 'Υπάρχει ήδη Website με αυτό το domain.'}
         
         self.sql_command(f'INSERT INTO Websites (id, name, description, domain) VALUES ("{data['id']}", "{data['name']}", "{data['description']}", "{data['domain']}")')
 
@@ -46,15 +49,22 @@ class WebsitesRepository(BaseRepository):
         if invalid:
             return invalid
 
-        if not self.get_by_id(data['id']):
+        if not self.exists('id', data['id']):
             return {'message': 'Δεν υπάρχει Website με αυτό το ID.'}
 
+        if self.exists('domain', data['domain']) and self.get_by_id(data['id'])['domain'] != data['domain']:
+            return {'message': 'Υπάρχει ήδη Website με αυτό το domain.'}
+
         set_clause = ', '.join([f'{key} = "{value}"' for key, value in data.items() if key != 'id'])
-        self.sql_command(f'UPDATE Websites SET {set_clause} WHERE id = "{data['id']}"')
+        self.sql_command(f'UPDATE Websites SET {set_clause} WHERE id = "{data.get("id")}"')
 
     # Deletes a 'Website' entry by its ID.
     def delete(self, id: str):
-        if not self.get_by_id(id):
+        if not self.exists('id', id):
             return {'message': 'Δεν υπάρχει Website με αυτό το ID.'}
         
         self.sql_command(f'DELETE FROM Websites WHERE id = "{id}"')
+
+    # Checks if a 'Website' entry exists in the database by one of its properties.
+    def exists(self, property_name: str, value: str):
+        return self.sql_get_one(f'SELECT id FROM Websites WHERE {property_name} = "{value}"') is not None

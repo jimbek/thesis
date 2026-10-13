@@ -11,7 +11,10 @@ pages = [
     st.Page("crud/pages/website/add_website.py", title="Νέο Website", visibility = "hidden"),
     st.Page("crud/pages/website/edit_website.py", title="Επεξεργασία Website", visibility = "hidden"),
     st.Page("crud/pages/website/delete_website.py", title="Διαγραφή Website", visibility = "hidden"),
-    st.Page("crud/pages/mcpserver/all_mcpservers.py", title="MCP Servers")
+    st.Page("crud/pages/mcpserver/all_mcpservers.py", title="MCP Servers"),
+    st.Page("crud/pages/mcpserver/add_mcpserver.py", title="Νέος MCP Server", visibility = "hidden"),
+    st.Page("crud/pages/mcpserver/edit_mcpserver.py", title="Επεξεργασία MCP Server", visibility = "hidden"),
+    st.Page("crud/pages/mcpserver/delete_mcpserver.py", title="Διαγραφή MCP Server", visibility = "hidden")
 ]
 
 pg = st.navigation(pages)
