@@ -1,9 +1,9 @@
 # This page allows the user to add a new LLM.
-from crud.services.Ollama import OllamaService
+from crud.services.LLMsService import LLMsService
 
 import streamlit as st
 
-service = OllamaService()
+service = LLMsService()
 
 st.header("Εγκατάσταση LLM")
 

@@ -2,7 +2,6 @@
 from crud.routes.RestAPIs import get_restapis, add_restapi, edit_restapi, delete_restapi
 from crud.routes.Websites import get_websites, add_website, edit_website, delete_website
 from crud.routes.MCPServers import get_mcpservers, add_mcpserver, edit_mcpserver, delete_mcpserver
-from crud.routes.LLMs import get_llms, add_llm, edit_llm, delete_llm
 from crud.routes.Agents import get_agents, add_agent, edit_agent, delete_agent
 
 from flask import Flask
@@ -23,11 +22,6 @@ app.add_url_rule('/mcpservers', 'get_mcpservers', get_mcpservers, methods=['GET'
 app.add_url_rule('/mcpservers', 'add_mcpserver', add_mcpserver, methods=['POST'])
 app.add_url_rule('/mcpservers/<id>', 'edit_mcpserver', edit_mcpserver, methods=['PUT'])
 app.add_url_rule('/mcpservers/<id>', 'delete_mcpserver', delete_mcpserver, methods=['DELETE'])
-
-app.add_url_rule('/llms', 'get_llms', get_llms, methods=['GET'])
-app.add_url_rule('/llms', 'add_llm', add_llm, methods=['POST'])
-app.add_url_rule('/llms/<id>', 'edit_llm', edit_llm, methods=['PUT'])
-app.add_url_rule('/llms/<id>', 'delete_llm', delete_llm, methods=['DELETE'])
 
 app.add_url_rule('/agents', 'get_agents', get_agents, methods=['GET'])
 app.add_url_rule('/agents', 'add_agent', add_agent, methods=['POST'])

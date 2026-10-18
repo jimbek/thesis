@@ -39,7 +39,7 @@ class MCPServersRepository(BaseRepository):
             FROM MCPServers
             LEFT JOIN RestAPIs AS restapi ON MCPServers.restapi_id = restapi.id
             LEFT JOIN Websites AS website ON MCPServers.website_id = website.id
-            WHERE MCPServers.id = "{id}"
+            WHERE MCPServers.id = \'{id}\'
         ''')
         return MCPServer.to_dict(row) if row else None
 
@@ -51,7 +51,7 @@ class MCPServersRepository(BaseRepository):
         if invalid:
             return invalid
 
-        self.sql_command(f'INSERT INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("{data['id']}", "{data['name']}", "{data['instructions']}", "{data['restapi_id']}", "{data['website_id']}")')
+        self.sql_command(f'INSERT INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES (\'{data['id']}\', \'{data['name']}\', \'{data['instructions']}\', \'{data['restapi_id']}\', \'{data['website_id']}\')')
 
         return data['id']
 
@@ -64,16 +64,16 @@ class MCPServersRepository(BaseRepository):
         if not self.exists('id', data['id']):
             return {'message': 'Δεν υπάρχει MCP Server με αυτό το ID.'}
         
-        set_clause = ', '.join([f'{key} = "{value}"' for key, value in data.items()])
-        self.sql_command(f'UPDATE MCPServers SET {set_clause} WHERE id = "{data["id"]}"')
+        set_clause = ', '.join([f'{key} = \'{value}\'' for key, value in data.items()])
+        self.sql_command(f'UPDATE MCPServers SET {set_clause} WHERE id = \'{data["id"]}\'')
 
     # Deletes a 'MCPServer' entry by its ID.
     def delete(self, id: str):
         if not self.exists('id', id):
             return {'message': 'Δεν υπάρχει MCP Server με αυτό το ID.'}
         
-        self.sql_command(f'DELETE FROM MCPServers WHERE id = "{id}"')
+        self.sql_command(f'DELETE FROM MCPServers WHERE id = \'{id}\'')
 
     # Checks if an 'MCPServer' entry exists in the database by one of its properties.
     def exists(self, property_name: str, value: str):
-        return self.sql_get_one(f'SELECT id FROM MCPServers WHERE {property_name} = "{value}"') is not None
+        return self.sql_get_one(f'SELECT id FROM MCPServers WHERE {property_name} = \'{value}\'') is not None

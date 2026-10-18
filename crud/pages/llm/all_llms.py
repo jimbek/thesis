@@ -1,9 +1,9 @@
 # This page displays the list of existing LLMs.
-from crud.services.Ollama import OllamaService
+from crud.services.LLMsService import LLMsService
 
 import streamlit as st
 
-service = OllamaService()
+service = LLMsService()
 
 # Initialize a container for the page content.
 global container

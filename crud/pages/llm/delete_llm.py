@@ -1,5 +1,5 @@
 # This page allows the user to delete an LLM.
-from crud.services.Ollama import OllamaService
+from crud.services.LLMsService import LLMsService
 
 import streamlit as st
 
@@ -8,7 +8,7 @@ if not name:
     st.error("Λείπει το όνομα του LLM")
     st.stop()
 
-service = OllamaService()
+service = LLMsService()
 
 st.header("Διαγραφή LLM")
 

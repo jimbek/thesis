@@ -3,7 +3,7 @@ from crud.models.LLM import LLM
 
 import requests
 
-class OllamaService:
+class LLMsService:
     def __init__(self):
         self.DOMAIN = "http://localhost:11434"
 

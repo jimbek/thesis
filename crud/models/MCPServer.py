@@ -16,8 +16,8 @@ class MCPServer:
             "instructions": row[2],
             "restapi_id": row[3],
             "website_id": row[4],
-            "type": "Rest API" if row[3] is not None else "Website",
-            "source": row[5] if row[5] is not None else row[6]
+            "type": "Rest API" if row[3] is not None and row[3] != "" and row[3] != "None" else "Website",
+            "source": row[5] if row[3] is not None and row[3] != "" and row[3] != "None" else row[6]
         }
 
     # Returns a dictionary that describes an invalid MCPServer instance.

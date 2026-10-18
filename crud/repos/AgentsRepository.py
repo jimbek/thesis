@@ -14,9 +14,8 @@ class AgentsRepository(BaseRepository):
                 id TEXT PRIMARY KEY,
                 name TEXT,
                 system_prompt TEXT,
-                llm_id TEXT,
                 mcp_server_id TEXT,
-                FOREIGN KEY (llm_id) REFERENCES LLMs(id),
+                llm TEXT,
                 FOREIGN KEY (mcp_server_id) REFERENCES MCPServers(id)
             )
         ''')
@@ -29,26 +28,26 @@ class AgentsRepository(BaseRepository):
 
     # Retrieves an 'Agent' entry by its ID.
     def get_by_id(self, id: str):
-        row = self.sql_get_one(f'SELECT * FROM Agents WHERE id = "{id}"')
+        row = self.sql_get_one(f'SELECT * FROM Agents WHERE id = \'{id}\'')
         return Agent.to_dict(row) if row else None
 
     # Adds a new 'Agent' entry to the database and returns the ID of the newly created entry.
-    def add(self, data: dict, llm_id: str = None, mcp_server_id: str = None):
+    def add(self, data: dict):
         data['id'] = str(uuid.uuid4())
 
-        self.sql_command(f'INSERT INTO Agents (id, name, system_prompt, llm_id, mcp_server_id) VALUES ("{data['id']}", "{data['name']}", "{data['system_prompt']}", "{llm_id}", "{mcp_server_id}")')
+        self.sql_command(f'INSERT INTO Agents (id, name, system_prompt, llm, mcp_server_id) VALUES (\'{data['id']}\', \'{data['name']}\', \'{data['system_prompt']}\', \'{data['llm']}\', \'{data['mcp_server_id']}\')')
 
         return data['id']
 
     # Edits an existing 'Agent' entry by its ID.
     def edit(self, id: str, data: dict):
-        set_clause = ', '.join([f'{key} = "{value}"' for key, value in data.items()])
-        self.sql_command(f'UPDATE Agents SET {set_clause} WHERE id = "{id}"')
+        set_clause = ', '.join([f'{key} = \'{value}\'' for key, value in data.items()])
+        self.sql_command(f'UPDATE Agents SET {set_clause} WHERE id = \'{id}\'')
 
     # Checks if an 'Agent' entry exists in the database by its ID.
     def exists(self, id: str):
-        return self.sql_get_one(f'SELECT id FROM Agents WHERE id = "{id}"') is not None
+        return self.sql_get_one(f'SELECT id FROM Agents WHERE id = \'{id}\'') is not None
 
     # Deletes an 'Agent' entry by its ID.
     def delete(self, id: str):
-        self.sql_command(f'DELETE FROM Agents WHERE id = "{id}"')
+        self.sql_command(f'DELETE FROM Agents WHERE id = \'{id}\'')
