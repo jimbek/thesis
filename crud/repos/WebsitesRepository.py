@@ -37,31 +37,36 @@ class WebsitesRepository(BaseRepository):
             return invalid
 
         if self.exists('domain', data['domain']):
-            return {'message': 'Υπάρχει ήδη Website με αυτό το domain.'}
+            return {'error': 'Υπάρχει ήδη Website με αυτό το domain.'}
         
         self.sql_command(f'INSERT INTO Websites (id, name, description, domain) VALUES (\'{data['id']}\', \'{data['name']}\', \'{data['description']}\', \'{data['domain']}\')')
 
         return data['id']
 
     # Edits an existing 'Website' entry by its ID.
-    def edit(self, data: dict):
+    def edit(self, id: str, data: dict):
+        if not id:
+            return {'error': 'Λείπει το ID του Website.'}
+
+        data['id'] = id
+
         invalid = Website.to_invalid(data)
         if invalid:
             return invalid
 
-        if not self.exists('id', data['id']):
-            return {'message': 'Δεν υπάρχει Website με αυτό το ID.'}
+        if not self.exists('id', id):
+            return {'error': 'Δεν υπάρχει Website με αυτό το ID.'}
 
-        if self.exists('domain', data['domain']) and self.get_by_id(data['id'])['domain'] != data['domain']:
-            return {'message': 'Υπάρχει ήδη Website με αυτό το domain.'}
+        if self.exists('domain', data['domain']) and self.get_by_id(id)['domain'] != data['domain']:
+            return {'error': 'Υπάρχει ήδη Website με αυτό το domain.'}
 
         set_clause = ', '.join([f'{key} = \'{value}\'' for key, value in data.items() if key != 'id'])
-        self.sql_command(f'UPDATE Websites SET {set_clause} WHERE id = \'{data.get("id")}\'')
+        self.sql_command(f'UPDATE Websites SET {set_clause} WHERE id = \'{id}\'')
 
     # Deletes a 'Website' entry by its ID.
     def delete(self, id: str):
         if not self.exists('id', id):
-            return {'message': 'Δεν υπάρχει Website με αυτό το ID.'}
+            return {'error': 'Δεν υπάρχει Website με αυτό το ID.'}
         
         self.sql_command(f'DELETE FROM Websites WHERE id = \'{id}\'')
 

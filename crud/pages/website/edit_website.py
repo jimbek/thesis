@@ -1,5 +1,5 @@
 # This page allows the user to edit an existing Website.
-from crud.repos.WebsitesRepository import WebsitesRepository
+from crud.services.WebsitesService import WebsitesService
 
 import streamlit as st
 
@@ -8,7 +8,7 @@ if not id:
     st.error("Λείπει το ID του Website")
     st.stop()
 
-repo = WebsitesRepository()
+service = WebsitesService()
 
 st.header("Επεξεργασία Website")
 
@@ -17,9 +17,9 @@ global container
 container = st.container()
 
 with container:
-    website = repo.get_by_id(id)
-    if not website:
-        container.error("Δεν βρέθηκε το Website")
+    website = service.get_by_id(id)
+    if isinstance(website, dict) and "error" in website:
+        container.error(f"Σφάλμα: {website['error']}")
         st.stop()
     
     name = container.text_input("Όνομα", value=website.get('name'))
@@ -28,15 +28,15 @@ with container:
 
     if container.button("Save"):
         data = {
-            "id": id,
             "name": name,
             "description": description,
             "domain": domain
         }
 
-        result = repo.edit(data)
+        result = service.edit(id, data)
+        st.toast(result)
         
-        if isinstance(result, dict) and "message" in result:
-            container.error(f"Σφάλμα: {result['message']}")
+        if isinstance(result, dict) and "error" in result:
+            container.error(f"Σφάλμα: {result['error']}")
         else:
             st.switch_page("crud/pages/website/all_websites.py")

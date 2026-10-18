@@ -1,18 +1,19 @@
 # We have implemented four services:
-# 1. ollama: This service runs the Ollama server.
-# 2. streamlit: This service runs the Streamlit admin interface.
+# 1. api: This service runs the API server.
+# 2. ollama: This service runs the Ollama server.
+# 3. streamlit: This service runs the Streamlit admin interface.
 
-# In order to run the containers:
-# 1. Create a .env file in the same directory as this compose.yaml file with the following content:
-#    RESEND_API_KEY=your_resend_api_key
-#    RESEND_FROM_EMAIL=your_resend_from_email
-#    OLLAMA_MODEL=the_name_of_your_ollama_model
-# 2. Open Docker Desktop and the terminal.
-# 3. Navigate to the directory containing this compose.yaml file.
-# 4. Run the command 'docker compose up'
-# 5. Go to http://localhost:11434/api/tags to check if ${OLLAMA_MODEL} is available.
-# 6. If ${OLLAMA_MODEL} is not available, go to ollama's container, open the terminal, and run the command 'ollama run ${OLLAMA_MODEL}'.
+# 1. Open Docker Desktop and the terminal.
+# 2. Navigate to the directory containing this compose.yaml file.
+# 3. Run the command 'docker compose up'
 services:
+  api:
+    build:
+      context: ./
+      dockerfile: ./images/api/Dockerfile
+    ports:
+      - "5000:5000"
+
   ollama:
     build:
       context: ./
@@ -30,6 +31,7 @@ services:
       - "8501:8501"
     command: streamlit run admin.py --server.port=8501 --server.address=0.0.0.0
     depends_on:
+      - api
       - ollama
 
 volumes:

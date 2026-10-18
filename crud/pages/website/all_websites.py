@@ -1,9 +1,9 @@
 # This page displays the list of existing Websites.
-from crud.repos.WebsitesRepository import WebsitesRepository
+from crud.services.WebsitesService import WebsitesService
 
 import streamlit as st
 
-repo = WebsitesRepository()
+service = WebsitesService()
 
 # Initialize a container for the page content.
 global container
@@ -37,7 +37,7 @@ with container:
     header[2].markdown("**Domain**")
     header[3].markdown("**Ενέργειες**")
 
-    for website in repo.get_all():
+    for website in service.get_all():
         row = container.columns([1, 3.5, 1.5, 0.5])
 
         row[0].markdown(website.get('name'))

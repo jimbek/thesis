@@ -1,9 +1,9 @@
 # This page allows the user to add a new Website.
-from crud.repos.WebsitesRepository import WebsitesRepository
+from crud.services.WebsitesService import WebsitesService
 
 import streamlit as st
 
-repo = WebsitesRepository()
+service = WebsitesService()
 
 st.header("Δημιουργία Website")
 
@@ -23,9 +23,9 @@ with container:
             "domain": domain
         }
 
-        result = repo.add(data)
+        result = service.add(data)
         
-        if isinstance(result, dict) and "message" in result:
-            container.error(f"Σφάλμα: {result['message']}")
+        if isinstance(result, dict) and "error" in result:
+            container.error(f"Σφάλμα: {result['error']}")
         else:
             st.switch_page("crud/pages/website/all_websites.py")

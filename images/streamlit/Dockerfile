@@ -8,6 +8,7 @@ WORKDIR /app
 COPY /crud/models /app/crud/models
 COPY /crud/pages /app/crud/pages
 COPY /crud/repos /app/crud/repos
+COPY /crud/services /app/crud/services
 
 COPY admin.py /app/admin.py
 
