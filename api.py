@@ -5,7 +5,7 @@ from crud.repos.MCPServersRepository import MCPServersRepository
 from crud.repos.AgentsRepository import AgentsRepository
 from crud.routes.RestAPIs import get_restapis, get_restapi_by_id, add_restapi, edit_restapi, delete_restapi
 from crud.routes.Websites import get_websites, get_website_by_id, add_website, edit_website, delete_website
-from crud.routes.MCPServers import get_mcpservers, add_mcpserver, edit_mcpserver, delete_mcpserver
+from crud.routes.MCPServers import get_mcpservers, get_mcpserver_by_id, add_mcpserver, edit_mcpserver, delete_mcpserver
 from crud.routes.Agents import get_agents, add_agent, edit_agent, delete_agent
 
 from flask import Flask
@@ -43,6 +43,7 @@ app.add_url_rule('/websites/<id>', 'edit_website', edit_website, methods=['PUT']
 app.add_url_rule('/websites/<id>', 'delete_website', delete_website, methods=['DELETE'])
 
 app.add_url_rule('/mcpservers', 'get_mcpservers', get_mcpservers, methods=['GET'])
+app.add_url_rule('/mcpservers/<id>', 'get_mcpserver_by_id', get_mcpserver_by_id, methods=['GET'])
 app.add_url_rule('/mcpservers', 'add_mcpserver', add_mcpserver, methods=['POST'])
 app.add_url_rule('/mcpservers/<id>', 'edit_mcpserver', edit_mcpserver, methods=['PUT'])
 app.add_url_rule('/mcpservers/<id>', 'delete_mcpserver', delete_mcpserver, methods=['DELETE'])

@@ -1,7 +1,7 @@
 # This page allows the user to edit an existing MCP Server.
-from crud.repos.MCPServersRepository import MCPServersRepository
-from crud.repos.RestAPIsRepository import RestAPIsRepository
-from crud.repos.WebsitesRepository import WebsitesRepository
+from crud.services.MCPServersService import MCPServersService
+from crud.services.RestAPIsService import RestAPIsService
+from crud.services.WebsitesService import WebsitesService
 
 import streamlit as st
 
@@ -10,9 +10,9 @@ if not id:
     st.error("Λείπει το ID του MCP Server")
     st.stop()
 
-repo = MCPServersRepository()
-rest_apis_repo = RestAPIsRepository()
-websites_repo = WebsitesRepository()
+service = MCPServersService()
+rest_apis_service = RestAPIsService()
+websites_service = WebsitesService()
 
 st.header("Επεξεργασία MCP Server")
 
@@ -21,15 +21,15 @@ global container
 container = st.container()
 
 with container:
-    mcpserver = repo.get_by_id(id)
-    if not mcpserver:
-        container.error("Δεν βρέθηκε ο MCP Server")
+    mcpserver = service.get_by_id(id)
+    if isinstance(mcpserver, dict) and "error" in mcpserver:
+        container.error(f"Σφάλμα: {mcpserver['error']}")
         st.stop()
     
     name = container.text_input("Όνομα", value=mcpserver.get('name') if mcpserver else "")
     instructions = container.text_area("Οδηγίες", value=mcpserver.get('instructions') if mcpserver else "")
 
-    all_rest_apis = rest_apis_repo.get_all()
+    all_rest_apis = rest_apis_service.get_all()
     rest_api_id = container.selectbox(
         "REST API",
         options=[None] + [api['id'] for api in all_rest_apis],
@@ -37,7 +37,7 @@ with container:
         index = 0 if mcpserver.get('type') == "Website" else ([None] + [api['id'] for api in all_rest_apis]).index(mcpserver.get('restapi_id'))
     )
 
-    all_websites = websites_repo.get_all()
+    all_websites = websites_service.get_all()
     website_id = container.selectbox(
         "Website",
         options=[None] + [website['id'] for website in all_websites],
@@ -47,16 +47,15 @@ with container:
 
     if container.button("Save"):
         data = {
-            "id": id,
             "name": name,
             "instructions": instructions,
             "restapi_id": rest_api_id,
             "website_id": website_id
         }
 
-        result = repo.edit(data)
+        result = service.edit(id, data)
         
-        if isinstance(result, dict) and "message" in result:
-            container.error(f"Σφάλμα: {result['message']}")
+        if isinstance(result, dict) and "error" in result:
+            container.error(f"Σφάλμα: {result['error']}")
         else:
             st.switch_page("crud/pages/mcpserver/all_mcpservers.py")

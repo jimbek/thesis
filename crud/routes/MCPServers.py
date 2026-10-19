@@ -11,38 +11,54 @@ def get_mcpservers():
     try:
         return repo.get_all(), 200
     except Exception as error:
-        return f"Internal server error: {error}", 500
+        return {'error': f"Internal server error: {error}"}, 500
+
+# GET /mcpservers/<id> - Get an MCP server by its ID.
+def get_mcpserver_by_id(id):
+    try:
+        result = repo.get_by_id(id)
+
+        if result is None:
+            return {'error': 'Δεν υπάρχει MCP Server με αυτό το ID.'}, 404
+
+        return result, 200
+    except Exception as error:
+        return {'error': f"Internal server error: {error}"}, 500
 
 # POST /mcpservers - Create an MCP server.
 def add_mcpserver():
     try:
         data = request.get_json()
+        result = repo.add(data)
 
-        if data is None:
-            return "Body is missing", 400
+        if isinstance(result, dict) and "error" in result:
+            return result, 400
         
-        if not data.get("name"):
-            return "Invalid parameters", 400
-        
-        return repo.add(data), 201
+        return result, 201
     except Exception as error:
-        return f"Internal server error: {error}", 500
+        return {'error': f"Internal server error: {error}"}, 500
 
 # PUT /mcpservers/<id> - Update an MCP server by its ID.
 def edit_mcpserver(id):
     try:
         data = request.get_json()
+        result = repo.edit(id, data)
 
-        if data is None:
-            return "Body is missing", 400
+        if isinstance(result, dict) and "error" in result:
+            return result, 400
         
-        return repo.edit(id, data), 200
+        return result, 200
     except Exception as error:
-        return f"Internal server error: {error}", 500
+        return {'error': f"Internal server error: {error}"}, 500
 
 # DELETE /mcpservers/<id> - Delete an MCP server by its ID.
 def delete_mcpserver(id):
     try:
-        return repo.delete(id), 200
+        result = repo.delete(id)
+                
+        if isinstance(result, dict) and "error" in result:
+            return result, 400
+
+        return result, 200
     except Exception as error:
-        return f"Internal server error: {error}", 500
+        return {'error': f"Internal server error: {error}"}, 500

@@ -56,21 +56,27 @@ class MCPServersRepository(BaseRepository):
         return data['id']
 
     # Edits an existing 'MCPServer' entry by its ID.
-    def edit(self, data: dict):
+    def edit(self, id: str, data: dict):
+        if not id:
+            return {'error': 'Λείπει το ID του MCP Server.'}
+    
+        data['id'] = id
+
         invalid = MCPServer.to_invalid(data)
         if invalid:
             return invalid
 
-        if not self.exists('id', data['id']):
-            return {'message': 'Δεν υπάρχει MCP Server με αυτό το ID.'}
+        if not self.exists('id', id):
+            return {'error': 'Δεν υπάρχει MCP Server με αυτό το ID.'}
         
         set_clause = ', '.join([f'{key} = \'{value}\'' for key, value in data.items()])
-        self.sql_command(f'UPDATE MCPServers SET {set_clause} WHERE id = \'{data["id"]}\'')
+        self.sql_command(f'UPDATE MCPServers SET {set_clause} WHERE id = \'{id}\'')
 
+        return id
     # Deletes a 'MCPServer' entry by its ID.
     def delete(self, id: str):
         if not self.exists('id', id):
-            return {'message': 'Δεν υπάρχει MCP Server με αυτό το ID.'}
+            return {'error': 'Δεν υπάρχει MCP Server με αυτό το ID.'}
         
         self.sql_command(f'DELETE FROM MCPServers WHERE id = \'{id}\'')
 

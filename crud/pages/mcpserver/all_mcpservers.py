@@ -1,9 +1,9 @@
 # This page displays the list of existing MCP Servers.
-from crud.repos.MCPServersRepository import MCPServersRepository
+from crud.services.MCPServersService import MCPServersService
 
 import streamlit as st
 
-repo = MCPServersRepository()
+service = MCPServersService()
 
 # Initialize a container for the page content.
 global container
@@ -38,7 +38,7 @@ with container:
     header[3].markdown("**Πηγή**")
     header[4].markdown("**Ενέργειες**")
 
-    for mcpserver in repo.get_all():
+    for mcpserver in service.get_all():
         row = container.columns([1.5, 3.5, 1, 1.5, 0.5])
 
         row[0].markdown(mcpserver.get('name'))
