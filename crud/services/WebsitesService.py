@@ -3,7 +3,7 @@ import requests
 
 class WebsitesService:
     def __init__(self):
-        self.DOMAIN = "http://localhost:5000"
+        self.DOMAIN = "http://api:5000"
 
     # Returns the list of websites.
     def get_all(self) -> list[str]:

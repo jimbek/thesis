@@ -3,7 +3,7 @@ import requests
 
 class RestAPIsService:
     def __init__(self):
-        self.DOMAIN = "http://localhost:5000"
+        self.DOMAIN = "http://api:5000"
 
     # Returns the list of REST APIs.
     def get_all(self) -> list[str]:

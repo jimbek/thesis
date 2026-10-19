@@ -5,7 +5,7 @@ import requests
 
 class LLMsService:
     def __init__(self):
-        self.DOMAIN = "http://localhost:11434"
+        self.DOMAIN = "http://ollama:11434"
 
     # Returns the list of locally downloaded models.
     def get_all(self) -> list[str]:
