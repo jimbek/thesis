@@ -63,6 +63,8 @@ class WebsitesRepository(BaseRepository):
         set_clause = ', '.join([f'{key} = \'{value}\'' for key, value in data.items() if key != 'id'])
         self.sql_command(f'UPDATE Websites SET {set_clause} WHERE id = \'{id}\'')
 
+        return id
+
     # Deletes a 'Website' entry by its ID.
     def delete(self, id: str):
         if not self.exists('id', id):

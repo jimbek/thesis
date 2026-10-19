@@ -34,7 +34,6 @@ with container:
         }
 
         result = service.edit(id, data)
-        st.toast(result)
         
         if isinstance(result, dict) and "error" in result:
             container.error(f"Σφάλμα: {result['error']}")
