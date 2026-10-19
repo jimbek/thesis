@@ -11,7 +11,7 @@ def get_websites():
     try:
         return repo.get_all(), 200
     except Exception as error:
-        return f"Internal server error: {error}", 500
+        return {'error': f"Internal server error: {error}"}, 500
 
 # GET /websites/<id> - Get a website by its ID.
 def get_website_by_id(id):
@@ -23,7 +23,7 @@ def get_website_by_id(id):
 
         return result, 200
     except Exception as error:
-        return f"Internal server error: {error}", 500
+        return {'error': f"Internal server error: {error}"}, 500
 
 # POST /websites - Create a website.
 def add_website():
@@ -36,7 +36,7 @@ def add_website():
         
         return result, 201
     except Exception as error:
-        return f"Internal server error: {error}", 500
+        return {'error': f"Internal server error: {error}"}, 500
 
 # PUT /websites/<id> - Update a website by its ID.
 def edit_website(id: str):
@@ -61,4 +61,4 @@ def delete_website(id):
 
         return result, 200
     except Exception as error:
-        return f"Internal server error: {error}", 500   
+        return {'error': f"Internal server error: {error}"}, 500

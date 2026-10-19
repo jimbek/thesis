@@ -39,7 +39,7 @@ class RestAPI:
 
         if message:
             return {
-                "message": message
+                "error": message
             }
 
         return None

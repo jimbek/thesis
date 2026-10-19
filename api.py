@@ -3,7 +3,7 @@ from crud.repos.RestAPIsRepository import RestAPIsRepository
 from crud.repos.WebsitesRepository import WebsitesRepository
 from crud.repos.MCPServersRepository import MCPServersRepository
 from crud.repos.AgentsRepository import AgentsRepository
-from crud.routes.RestAPIs import get_restapis, add_restapi, edit_restapi, delete_restapi
+from crud.routes.RestAPIs import get_restapis, get_restapi_by_id, add_restapi, edit_restapi, delete_restapi
 from crud.routes.Websites import get_websites, get_website_by_id, add_website, edit_website, delete_website
 from crud.routes.MCPServers import get_mcpservers, add_mcpserver, edit_mcpserver, delete_mcpserver
 from crud.routes.Agents import get_agents, add_agent, edit_agent, delete_agent
@@ -31,6 +31,7 @@ if agents_repo.table_exists('Agents') is False:
 app = Flask(__name__)
 
 app.add_url_rule('/restapis', 'get_restapis', get_restapis, methods=['GET'])
+app.add_url_rule('/restapis/<id>', 'get_restapi_by_id', get_restapi_by_id, methods=['GET'])
 app.add_url_rule('/restapis', 'add_restapi', add_restapi, methods=['POST'])
 app.add_url_rule('/restapis/<id>', 'edit_restapi', edit_restapi, methods=['PUT'])
 app.add_url_rule('/restapis/<id>', 'delete_restapi', delete_restapi, methods=['DELETE'])

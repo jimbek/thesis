@@ -1,9 +1,9 @@
 # This page allows the user to add a new REST API.
-from crud.repos.RestAPIsRepository import RestAPIsRepository
+from crud.services.RestAPIsService import RestAPIsService
 
 import streamlit as st
 
-repo = RestAPIsRepository()
+service = RestAPIsService()
 
 st.header("Δημιουργία REST API")
 
@@ -25,9 +25,9 @@ with container:
             "openapi_spec": openapi_spec,
         }
 
-        result = repo.add(data)
+        result = service.add(data)
         
-        if isinstance(result, dict) and "message" in result:
-            container.error(f"Σφάλμα: {result['message']}")
+        if isinstance(result, dict) and "error" in result:
+            container.error(f"Σφάλμα: {result['error']}")
         else:
             st.switch_page("crud/pages/restapi/index.py")

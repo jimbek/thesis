@@ -1,9 +1,9 @@
 # This page displays the list of existing REST APIs.
-from crud.repos.RestAPIsRepository import RestAPIsRepository
+from crud.services.RestAPIsService import RestAPIsService
 
 import streamlit as st
 
-repo = RestAPIsRepository()
+service = RestAPIsService()
 
 # Initialize a container for the page content.
 global container
@@ -38,7 +38,7 @@ with container:
     header[3].markdown("**Τεκμηρίωση**")
     header[4].markdown("**Ενέργειες**")
 
-    for api in repo.get_all():
+    for api in service.get_all():
         row = container.columns([1, 2.5, 1.5, 1.5, 0.5])
 
         row[0].markdown(api.get('name'))

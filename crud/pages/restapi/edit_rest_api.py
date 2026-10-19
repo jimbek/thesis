@@ -1,5 +1,5 @@
 # This page allows the user to edit an existing REST API.
-from crud.repos.RestAPIsRepository import RestAPIsRepository
+from crud.services.RestAPIsService import RestAPIsService
 
 import streamlit as st
 
@@ -8,7 +8,7 @@ if not id:
     st.error("Λείπει το ID του REST API")
     st.stop()
 
-repo = RestAPIsRepository()
+service = RestAPIsService()
 
 st.header("Επεξεργασία REST API")
 
@@ -17,9 +17,9 @@ global container
 container = st.container()
 
 with container:
-    api = repo.get_by_id(id)
-    if not api:
-        container.error("Δεν βρέθηκε το REST API")
+    api = service.get_by_id(id)
+    if isinstance(api, dict) and "error" in api:
+        container.error(f"Σφάλμα: {api['error']}")
         st.stop()
     
     name = container.text_input("Όνομα", value=api.get('name'))
@@ -29,16 +29,15 @@ with container:
 
     if container.button("Save"):
         data = {
-            "id": id,
             "name": name,
             "description": description,
             "domain": domain,
             "openapi_spec": openapi_spec,
         }
 
-        result = repo.edit(data)
+        result = service.edit(id,data)
         
-        if isinstance(result, dict) and "message" in result:
-            container.error(f"Σφάλμα: {result['message']}")
+        if isinstance(result, dict) and "error" in result:
+            container.error(f"Σφάλμα: {result['error']}")
         else:
             st.switch_page("crud/pages/restapi/index.py")
