@@ -18,15 +18,15 @@ container = st.container()
 
 with container:
     entry = service.get_by_id(id)
-    if not entry:
-        st.error("Δεν υπάρχει RestAPI με αυτό το ID.")
+    if isinstance(entry, dict) and "error" in entry:
+        container.error(f"Σφάλμα: {entry['error']}")
         st.stop()
 
-    st.html("Είστε σίγουροι ότι θέλετε να διαγράψετε το REST API με domain: <b>" + entry['domain'] + "</b>;")
+    container.html("Είστε σίγουροι ότι θέλετε να διαγράψετε το REST API με domain: <b>" + entry['domain'] + "</b>;")
     
     if container.button("Διαγραφή"):
         result = service.delete(id)
         if result and 'error' in result:
-            st.error(result['error'])
+            container.error(result['error'])
         else:
             st.switch_page("crud/pages/restapi/index.py")

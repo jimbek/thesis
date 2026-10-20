@@ -18,8 +18,8 @@ container = st.container()
 
 with container:
     entry = service.get_by_id(id)
-    if not entry:
-        st.error("Δεν υπάρχει Website με αυτό το ID.")
+    if isinstance(entry, dict) and "error" in entry:
+        container.error(f"Σφάλμα: {entry['error']}")
         st.stop()
 
     container.html("Είστε σίγουροι ότι θέλετε να διαγράψετε το Website με domain: <b>" + entry['domain'] + "</b>;")

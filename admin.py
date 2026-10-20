@@ -17,7 +17,11 @@ pages = [
     st.Page("crud/pages/mcpserver/delete_mcpserver.py", title="Διαγραφή MCP Server", visibility = "hidden"),
     st.Page("crud/pages/llm/all_llms.py", title="LLMs"),
     st.Page("crud/pages/llm/add_llm.py", title="Νέο LLM", visibility = "hidden"),
-    st.Page("crud/pages/llm/delete_llm.py", title="Διαγραφή LLM", visibility = "hidden")
+    st.Page("crud/pages/llm/delete_llm.py", title="Διαγραφή LLM", visibility = "hidden"),
+    st.Page("crud/pages/agent/all_agents.py", title="AI Agents"),
+    st.Page("crud/pages/agent/add_agent.py", title="Νέος Agent", visibility = "hidden"),
+    st.Page("crud/pages/agent/edit_agent.py", title="Επεξεργασία Agent", visibility = "hidden"),
+    st.Page("crud/pages/agent/delete_agent.py", title="Διαγραφή Agent", visibility = "hidden")
 ]
 
 pg = st.navigation(pages)
