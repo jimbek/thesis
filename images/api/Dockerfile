@@ -11,8 +11,9 @@ COPY /crud/routes /app/crud/routes
 
 COPY api.py /app/api.py
 
-# Install Flask.
-RUN pip install Flask==3.1.3
+# Install requirements.
+COPY images/api/requirements.txt /app/requirements.txt
+RUN pip install -r requirements.txt
 
 # Expose the port the app runs on.
 EXPOSE 5000

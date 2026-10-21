@@ -12,5 +12,6 @@ COPY /crud/services /app/crud/services
 
 COPY admin.py /app/admin.py
 
-# Install streamlit
-RUN pip install streamlit==1.65.0
+# Install requirements
+COPY images/streamlit/requirements.txt /app/requirements.txt
+RUN pip install -r requirements.txt
