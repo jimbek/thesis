@@ -19,25 +19,57 @@ class AgentsRepository(BaseRepository):
                 FOREIGN KEY (mcp_server_id) REFERENCES MCPServers(id)
             )
         ''')
+
+        super().apply_migrations('''
+            CREATE TABLE IF NOT EXISTS AgentMCPServers (
+                agent_id TEXT,
+                mcp_server_id TEXT,
+                FOREIGN KEY (agent_id) REFERENCES Agents(id),
+                FOREIGN KEY (mcp_server_id) REFERENCES MCPServers(id)
+            )
+        ''')
     
     # Retrieves all 'Agent' entries.
     def get_all(self):
         data = self.sql_get_all(f'''
-            SELECT Agents.id, Agents.name, Agents.system_prompt, Agents.mcp_server_id, Agents.llm, MCPServers.name
+            SELECT Agents.id, Agents.name, Agents.system_prompt, Agents.llm, MCPServers.name
             FROM Agents
             LEFT JOIN MCPServers ON Agents.mcp_server_id = MCPServers.id
         ''')
-        return [Agent.to_dict(row) for row in data]
+
+        mcp_server_ids = self.sql_get_all(f'''
+            SELECT agent_id, mcp_server_id
+            FROM AgentMCPServers
+        ''')
+
+        mcp_server_ids_dict = {}
+        for row in mcp_server_ids:
+            agent_id = row[0]
+            mcp_server_id = row[1]
+
+            if agent_id not in mcp_server_ids_dict:
+                mcp_server_ids_dict[agent_id] = []
+                
+            mcp_server_ids_dict[agent_id].append(mcp_server_id)
+
+        return [Agent.to_dict(row, mcp_server_ids_dict.get(row[0], [])) for row in data]
 
     # Retrieves an 'AI Agent' entry by its ID.
     def get_by_id(self, id: str):
         row = self.sql_get_one(f'''
-            SELECT Agents.id, Agents.name, Agents.system_prompt, Agents.mcp_server_id, Agents.llm, MCPServers.name
+            SELECT Agents.id, Agents.name, Agents.system_prompt, Agents.llm, MCPServers.name
             FROM Agents
             LEFT JOIN MCPServers ON Agents.mcp_server_id = MCPServers.id
             WHERE Agents.id = \'{id}\'
         ''')
-        return Agent.to_dict(row) if row else None
+
+        mcp_server_ids = self.sql_get_all(f'''
+            SELECT agent_id, mcp_server_id
+            FROM AgentMCPServers
+            WHERE agent_id = \'{id}\'
+        ''')
+
+        return Agent.to_dict(row, [row[1] for row in mcp_server_ids]) if row else None
 
     # Adds a new 'AI Agent' entry to the database and returns the ID of the newly created entry.
     def add(self, data: dict):
@@ -47,7 +79,10 @@ class AgentsRepository(BaseRepository):
         if invalid:
             return invalid
 
-        self.sql_command(f'INSERT INTO Agents (id, name, system_prompt, llm, mcp_server_id) VALUES (\'{data['id']}\', \'{data['name']}\', \'{data['system_prompt']}\', \'{data['llm']}\', \'{data['mcp_server_id']}\')')
+        self.sql_command(f'INSERT INTO Agents (id, name, system_prompt, llm) VALUES (\'{data['id']}\', \'{data['name']}\', \'{data['system_prompt']}\', \'{data['llm']}\')')
+        
+        for mcp_server_id in data['mcp_server_ids']:
+            self.sql_command(f'INSERT INTO AgentMCPServers (agent_id, mcp_server_id) VALUES (\'{data['id']}\', \'{mcp_server_id}\')')
 
         return data['id']
 
@@ -65,8 +100,12 @@ class AgentsRepository(BaseRepository):
         if not self.exists(id):
             return {'error': 'Δεν υπάρχει AI Agent με αυτό το ID.'}
         
-        set_clause = ', '.join([f'{key} = \'{value}\'' for key, value in data.items()])
+        set_clause = ', '.join([f'{key} = \'{value}\'' for key, value in data.items() if key != 'mcp_server_ids'])
         self.sql_command(f'UPDATE Agents SET {set_clause} WHERE id = \'{id}\'')
+
+        self.sql_command(f'DELETE FROM AgentMCPServers WHERE agent_id = \'{id}\'')
+        for mcp_server_id in data['mcp_server_ids']:
+            self.sql_command(f'INSERT INTO AgentMCPServers (agent_id, mcp_server_id) VALUES (\'{id}\', \'{mcp_server_id}\')')
 
         return id
 
@@ -74,7 +113,8 @@ class AgentsRepository(BaseRepository):
     def delete(self, id: str):
         if not self.exists(id):
             return {'error': 'Δεν υπάρχει AI Agent με αυτό το ID.'}
-        
+
+        self.sql_command(f'DELETE FROM AgentMCPServers WHERE agent_id = \'{id}\'')
         self.sql_command(f'DELETE FROM Agents WHERE id = \'{id}\'')
 
     # Checks if an 'AI Agent' entry exists in the database by its ID.

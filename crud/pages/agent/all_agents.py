@@ -34,8 +34,8 @@ with container:
     header = container.columns([1.5, 3.5, 1, 1.5, 0.5])
     header[0].markdown("**Όνομα**")
     header[1].markdown("**Οδηγίες**")
-    header[2].markdown("**MCP Server**")
-    header[3].markdown("**LLM**")
+    header[2].markdown("**LLM**")
+    header[3].markdown("**# MCP Servers**")
     header[4].markdown("**Ενέργειες**")
 
     for agent in service.get_all():
@@ -43,8 +43,8 @@ with container:
 
         row[0].markdown(agent.get('name'))
         row[1].markdown(agent.get('system_prompt'))
-        row[2].markdown(agent.get('source'))
-        row[3].markdown(agent.get('llm'))
+        row[2].markdown(agent.get('llm'))
+        row[3].markdown(len(agent.get('mcp_server_ids')))
 
         action_buttons = row[4].columns(2)
         action_buttons[0].page_link(

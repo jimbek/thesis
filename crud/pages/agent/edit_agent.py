@@ -29,14 +29,6 @@ with container:
     name = container.text_input("Όνομα", value=agent.get('name') if agent else "")
     system_prompt = container.text_area("System Prompt", value=agent.get('system_prompt') if agent else "")
 
-    all_mcp_servers = mcp_servers_service.get_all()
-    mcp_server_id = container.selectbox(
-        "MCP Server",
-        options=[None] + [server['id'] for server in all_mcp_servers],
-        format_func=lambda id: "None" if id is None else next(server['name'] for server in all_mcp_servers if server['id'] == id),
-        index = ([None] + [server['id'] for server in all_mcp_servers]).index(agent.get('mcp_server_id'))
-    )
-
     all_llms = llms_service.get_all()
     llm = container.selectbox(
         "LLM",
@@ -45,12 +37,20 @@ with container:
         index = ([None] + [llm for llm in all_llms]).index(agent.get('llm'))
     )
 
+    all_mcp_servers = mcp_servers_service.get_all()
+    mcp_server_ids = container.multiselect(
+        "MCP Servers",
+        options=[server['id'] for server in all_mcp_servers],
+        format_func=lambda id: "None" if id is None else next(server['name'] for server in all_mcp_servers if server['id'] == id),
+        default=agent.get('mcp_server_ids')
+    )
+
     if container.button("Save"):
         data = {
             "name": name,
             "system_prompt": system_prompt,
-            "mcp_server_id": mcp_server_id,
-            "llm": llm
+            "llm": llm,
+            "mcp_server_ids": mcp_server_ids
         }
 
         result = service.edit(id, data)

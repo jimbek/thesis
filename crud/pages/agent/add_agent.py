@@ -19,13 +19,6 @@ with container:
     name = container.text_input("Όνομα")
     system_prompt = container.text_area("System Prompt")
 
-    all_mcp_servers = mcp_servers_service.get_all()
-    mcp_server_id = container.selectbox(
-        "MCP Server",
-        options=[None] + [server['id'] for server in all_mcp_servers],
-        format_func=lambda id: "None" if id is None else next(server['name'] for server in all_mcp_servers if server['id'] == id)
-    )
-
     all_llms = llms_service.get_all()
     llm = container.selectbox(
         "LLM",
@@ -33,12 +26,19 @@ with container:
         format_func=lambda name: "None" if name is None else next(llm for llm in all_llms if llm == name)
     )
 
+    all_mcp_servers = mcp_servers_service.get_all()
+    mcp_server_ids = container.multiselect(
+        "MCP Servers",
+        options=[server['id'] for server in all_mcp_servers],
+        format_func=lambda id: "None" if id is None else next(server['name'] for server in all_mcp_servers if server['id'] == id)
+    )
+
     if container.button("Save"):
         data = {
             "name": name,
             "system_prompt": system_prompt,
-            "mcp_server_id": mcp_server_id,
-            "llm": llm
+            "llm": llm,
+            "mcp_server_ids": mcp_server_ids
         }
 
         result = service.add(data)
