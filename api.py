@@ -18,12 +18,15 @@ agents_repo = AgentsRepository()
 # Seed the db
 if restapis_repo.table_exists('RestAPIs') is False:
     restapis_repo.apply_migrations()
+    restapis_repo.seed_db()
 
 if websites_repo.table_exists('Websites') is False:
     websites_repo.apply_migrations()
+    websites_repo.seed_db()
 
 if mcpservers_repo.table_exists('MCPServers') is False:
     mcpservers_repo.apply_migrations()
+    mcpservers_repo.seed_db()
 
 if agents_repo.table_exists('Agents') is False:
     agents_repo.apply_migrations()

@@ -18,6 +18,13 @@ class WebsitesRepository(BaseRepository):
             )
         ''')
 
+    def seed_db(self):
+        super().seed_db(f'''
+            INSERT OR IGNORE INTO Websites (id, name, description, domain) VALUES ("71625d2a-a4a3-41a9-9412-f5706341e010", "WebMCP Website", "This is an open directory of websites that expose interfaces to agents via WebMCP.", "https://webmcp.com");
+            INSERT OR IGNORE INTO Websites (id, name, description, domain) VALUES ("71625d2a-a4a3-41a9-9412-f5706341e011", "OpenAI Developers Docs", "The OpenAI Developers plugin connects ChatGPT and Codex to the OpenAI Platform, follows OpenAI API setup guidance, and creates project API keys when your application needs one.", "https://developers.openai.com");
+            INSERT OR IGNORE INTO Websites (id, name, description, domain) VALUES ("71625d2a-a4a3-41a9-9412-f5706341e013", "Target.com", "Target's official website.", "https://www.target.com");
+        ''')
+
     # Retrieves all 'Website' entries.
     def get_all(self):
         data = self.sql_get_all(f'SELECT * FROM Websites')

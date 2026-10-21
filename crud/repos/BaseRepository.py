@@ -19,9 +19,13 @@ class BaseRepository:
     def apply_migrations(self, command: str):
         self.sql_command(command)
 
-    # Returns the filename of the database.
-    def __get_connection__(self):
-        return sqlite3.connect(self.db)
+    # Executes the given SQL command to the database.
+    # This is used to seed the database with initial data.
+    def seed_db(self, command: str):
+        commands = command.split(';')
+
+        for command in commands:
+            self.sql_command(command)
 
     # Opens a connection to the database, executes the given SQL command, and then closes the connection.
     def sql_command(self, command: str):
@@ -50,3 +54,7 @@ class BaseRepository:
         connection.close()
 
         return data
+
+    # Returns the filename of the database.
+    def __get_connection__(self):
+        return sqlite3.connect(self.db)
