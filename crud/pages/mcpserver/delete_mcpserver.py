@@ -29,4 +29,4 @@ with container:
         if result and 'error' in result:
             container.error(result['error'])
         else:
-            st.switch_page("crud/pages/mcpserver/all_mcpservers.py")
+            st.switch_page("crud/pages/mcpserver/index.py")

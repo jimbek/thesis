@@ -40,4 +40,4 @@ with container:
         if isinstance(result, dict) and "error" in result:
             container.error(f"Σφάλμα: {result['error']}")
         else:
-            st.switch_page("crud/pages/restapi/index.py")
+            st.switch_page("crud/pages/restapi/all_rest_apis.py")

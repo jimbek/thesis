@@ -46,4 +46,4 @@ with container:
         if isinstance(result, dict) and "error" in result:
             container.error(f"Σφάλμα: {result['error']}")
         else:
-            st.switch_page("crud/pages/mcpserver/all_mcpservers.py")
+            st.switch_page("crud/pages/mcpserver/index.py")

@@ -29,4 +29,4 @@ with container:
         if result and 'error' in result:
             container.error(result['error'])
         else:
-            st.switch_page("crud/pages/restapi/index.py")
+            st.switch_page("crud/pages/restapi/all_rest_apis.py")
