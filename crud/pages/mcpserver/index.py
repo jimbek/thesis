@@ -46,14 +46,19 @@ with container:
         row[2].markdown(mcpserver.get('type'))
         row[3].markdown(mcpserver.get('source'))
 
-        action_buttons = row[4].columns(2)
+        action_buttons = row[4].columns(3)
         action_buttons[0].page_link(
+            "crud/pages/mcpserver/view_mcpserver.py",
+            label = "",
+            icon = ":material/visibility:",
+            query_params = {"id": mcpserver['id']})
+        action_buttons[1].page_link(
             "crud/pages/mcpserver/edit_mcpserver.py",
             label = "",
             icon = ":material/edit:",
             query_params = {"id": mcpserver['id']})
 
-        action_buttons[1].page_link(
+        action_buttons[2].page_link(
             "crud/pages/mcpserver/delete_mcpserver.py",
             label = "",
             icon = ":material/delete:",

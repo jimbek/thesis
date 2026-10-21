@@ -15,6 +15,7 @@ pages = [
     st.Page("crud/pages/mcpserver/add_mcpserver.py", title="Νέος MCP Server", visibility = "hidden"),
     st.Page("crud/pages/mcpserver/edit_mcpserver.py", title="Επεξεργασία MCP Server", visibility = "hidden"),
     st.Page("crud/pages/mcpserver/delete_mcpserver.py", title="Διαγραφή MCP Server", visibility = "hidden"),
+    st.Page("crud/pages/mcpserver/view_mcpserver.py", title="Προβολή MCP Server", visibility = "hidden"),
     st.Page("crud/pages/llm/all_llms.py", title="LLMs"),
     st.Page("crud/pages/llm/add_llm.py", title="Νέο LLM", visibility = "hidden"),
     st.Page("crud/pages/llm/delete_llm.py", title="Διαγραφή LLM", visibility = "hidden"),
