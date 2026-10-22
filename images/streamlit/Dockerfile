@@ -5,6 +5,7 @@ FROM python:3.14-slim
 WORKDIR /app
 
 # Copy the necessary application files
+COPY /crud/library /app/crud/library
 COPY /crud/models /app/crud/models
 COPY /crud/pages /app/crud/pages
 COPY /crud/repos /app/crud/repos
@@ -14,4 +15,8 @@ COPY admin.py /app/admin.py
 
 # Install requirements
 COPY images/streamlit/requirements.txt /app/requirements.txt
+
 RUN pip install -r requirements.txt
+
+RUN playwright install chromium
+RUN playwright install msedge
