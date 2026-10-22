@@ -21,10 +21,9 @@ class RestAPIsRepository(BaseRepository):
 
     def seed_db(self):
         super().seed_db('''
-            INSERT OR IGNORE INTO RestAPIs (id, name, description, domain, openapi_spec) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e070", "EDYP API", "Παρέχει endpoints για τον υπολογισμό μισθού δημοσίου υπαλλήλου και τη λήψη πληροφοριών αναφορικά με μισθοδοσία, επιδόματα, κρατήσεις και φορολογία.", "https://edyp.gr", "/v3/api-docs");
-            INSERT OR IGNORE INTO RestAPIs (id, name, description, domain, openapi_spec) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e071", "OpenGOV API", "Παρέχει δωρεάν, ανοικτή πρόσβαση στα δεδομένα των δημόσιων διαβουλεύσεων της Ελληνικής Κυβέρνησης.", "https://opengov.gr", "/wp-json/opengov/v1");
-            INSERT OR IGNORE INTO RestAPIs (id, name, description, domain, openapi_spec) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e072", "ΣΔΑΔ API", "Σύστημα Διαχείρισης Ανθρώπινου Δυναμικού - ΥΠΟΥΡΓΕΙΟ ΕΣΩΤΕΡΙΚΩΝ.", "https://hrms.gov.gr/api", "/docs");
-            INSERT OR IGNORE INTO RestAPIs (id, name, description, domain, openapi_spec) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e073", "Α.Π.Θ. API", "Παρέχει πληροφορίες για Προσωπικό, Διδάσκοντες, Μονάδες, Στατιστικά, Μαθήματα, Φοιτητές, Κτίρια και Αίθουσες", "https://ws-ext.it.auth.gr", "/swagger/swagger.yaml");
+            INSERT OR IGNORE INTO RestAPIs (id, name, description, domain, openapi_spec) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e070", "Ε.Δ.ΥΠ. - Εργαλεία Δημοσίων Υπαλλήλων", "Παρέχει endpoints για τον υπολογισμό μισθού δημοσίου υπαλλήλου και τη λήψη πληροφοριών αναφορικά με μισθοδοσία, επιδόματα, κρατήσεις και φορολογία.", "https://edyp.gr", "/v3/api-docs");
+            INSERT OR IGNORE INTO RestAPIs (id, name, description, domain, openapi_spec) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e071", "ΚΗΜΔΗΣ Open Data (Κεντρικό Ηλεκτρονικό Μητρώο Δημοσίων Συμβάσεων)", "Όλες οι δημόσιες συμβάσεις, προκηρύξεις, αναθέσεις και εντολές πληρωμών του ελληνικού δημοσίου.", "https://cerpp.eprocurement.gov.gr/khmdhs-opendata", "/v3/api-docs");
+            INSERT OR IGNORE INTO RestAPIs (id, name, description, domain, openapi_spec) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e073", "Petstore", "This is a sample Pet Store Server based on the OpenAPI 3.0 specification.", "https://petstore3.swagger.io", "/api/v3/openapi.json");
         ''')
     
     # Retrieves all 'RestAPI' entries.
