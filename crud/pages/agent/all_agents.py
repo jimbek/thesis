@@ -46,15 +46,22 @@ with container:
         row[2].markdown(agent.get('llm'))
         row[3].markdown(len(agent.get('mcp_server_ids')))
 
-        action_buttons = row[4].columns(2)
+        action_buttons = row[4].columns(3)
         action_buttons[0].page_link(
+            "crud/pages/agent/dockerise_agent.py",
+            label = "",
+            icon = ":material/terminal:",
+            query_params = {"id": agent['id']}
+        )
+        action_buttons[1].page_link(
             "crud/pages/agent/edit_agent.py",
             label = "",
             icon = ":material/edit:",
-            query_params = {"id": agent['id']})
-
-        action_buttons[1].page_link(
+            query_params = {"id": agent['id']}
+        )
+        action_buttons[2].page_link(
             "crud/pages/agent/delete_agent.py",
             label = "",
             icon = ":material/delete:",
-            query_params = {"id": agent['id']})
+            query_params = {"id": agent['id']}
+        )
