@@ -14,6 +14,7 @@ class MCPServersService:
     def get_by_id(self, id: str) -> dict:
         response = requests.get(f"{self.DOMAIN}/mcpservers/{id}")
         return response.json()
+    
     # Adds a new MCP server.
     def add(self, data: dict) -> str:
         response = requests.post(f"{self.DOMAIN}/mcpservers", json=data)

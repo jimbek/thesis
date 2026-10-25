@@ -14,6 +14,7 @@ class WebsitesService:
     def get_by_id(self, id: str) -> dict:
         response = requests.get(f"{self.DOMAIN}/websites/{id}")
         return response.json()
+    
     # Adds a new website.
     def add(self, data: dict) -> str:
         response = requests.post(f"{self.DOMAIN}/websites", json=data)

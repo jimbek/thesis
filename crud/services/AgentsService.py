@@ -28,15 +28,3 @@ class AgentsService:
     def delete(self, id: str) -> str:
         response = requests.delete(f"{self.DOMAIN}/agents/{id}")
         return response
-
-    # Runs an existing AI Agent as a subprocess.
-    def run(self, id: str) -> str:
-        pass
-
-    # Pauses a subprocess of an existing AI Agent.
-    def pause(self, id: str) -> str:
-        pass
-
-    # Deletes the subprocess of an existing AI Agent.
-    def delete(self, id: str) -> str:
-        pass

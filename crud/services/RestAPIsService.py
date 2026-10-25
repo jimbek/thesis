@@ -14,6 +14,7 @@ class RestAPIsService:
     def get_by_id(self, id: str) -> dict:
         response = requests.get(f"{self.DOMAIN}/restapis/{id}")
         return response.json()
+    
     # Adds a new REST API.
     def add(self, data: dict) -> str:
         response = requests.post(f"{self.DOMAIN}/restapis", json=data)
