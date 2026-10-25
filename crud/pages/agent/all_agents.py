@@ -48,7 +48,7 @@ with container:
 
         action_buttons = row[4].columns(3)
         action_buttons[0].page_link(
-            "crud/pages/agent/dockerise_agent.py",
+            "crud/pages/agent/manage_agent.py",
             label = "",
             icon = ":material/terminal:",
             query_params = {"id": agent['id']}

@@ -1,6 +1,5 @@
-# This page allows the user to dockerise an AI Agent entry by its ID.
+# This page allows the user to chat with an AI Agent entry by its ID.
 from crud.services.AgentsService import AgentsService
-from crud.services.DockerService import DockerService
 
 import streamlit as st
 
@@ -10,9 +9,8 @@ if not id:
     st.stop()
 
 service = AgentsService()
-docker_service = DockerService()
 
-st.header("Docker - AI Agent")
+st.header("Διαχείριση AI Agent")
 
 # Initialize a container for the page content.
 global container
@@ -24,14 +22,26 @@ with container:
         container.error(f"Σφάλμα: {entry['error']}")
         st.stop()
 
-    container.markdown(f"Αυτόματη δημιουργία / διαγραφή Docker container για τον <b>{entry['name']}</b> AI Agent.", unsafe_allow_html=True);
-
     def run_agent(agent):
         container.toast(f"Starting {agent['name']}...")
-        # docker_service.run_container(image=agent['image'], name=agent['name'])
         container.toast(f"Started running {agent['name']}.")
 
     def pause_agent(agent):
         container.toast(f"Pausing {agent['name']}...")
-        # docker_service.pause_container(name=agent['name'])
         container.toast(f"Paused {agent['name']}.")
+
+    def delete_agent(agent):
+        container.toast(f"Deleting {agent['name']}...")
+        container.toast(f"Deleted {agent['name']}.")
+
+    # Create side-by-side buttons using columns
+    col1, col2, col3 = st.columns([1.5, 1.5, 1.5])
+    
+    if col1.button("🚀 Εκτέλεση", use_container_width=True):
+        run_agent(entry)
+
+    if col2.button("⏸️ Παύση", use_container_width=True):
+        pause_agent(entry)
+
+    if col3.button("🗑️ Διαγραφή", use_container_width=True):
+        delete_agent(entry)

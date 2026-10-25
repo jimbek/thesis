@@ -23,7 +23,7 @@ pages = [
     st.Page("crud/pages/agent/add_agent.py", title="Νέος Agent", visibility = "hidden"),
     st.Page("crud/pages/agent/edit_agent.py", title="Επεξεργασία Agent", visibility = "hidden"),
     st.Page("crud/pages/agent/delete_agent.py", title="Διαγραφή Agent", visibility = "hidden"),
-    st.Page("crud/pages/agent/dockerise_agent.py", title="Dockerise Agent", visibility = "hidden")
+    st.Page("crud/pages/agent/manage_agent.py", title="Διαχείριση Agent", visibility = "hidden")
 ]
 
 pg = st.navigation(pages)
