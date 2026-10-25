@@ -11,7 +11,7 @@ class AgentsService:
         return agents
 
     # Retrieves an AI Agent by its ID.
-    def get_by_id(self, id: str) -> dict:
+    def get_by_agent_id(self, id: str) -> dict:
         response = requests.get(f"{self.DOMAIN}/agents/{id}")
         return response.json()
     # Adds a new AI Agent.

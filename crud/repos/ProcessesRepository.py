@@ -29,12 +29,12 @@ class ProcessesRepository(BaseRepository):
         return [Process.to_dict(row) for row in data]
 
     # Retrieves a 'Process' entry by its ID.
-    def get_by_id(self, id: str):
+    def get_by_agent_id(self, id: str):
         row = self.sql_get_one(f'''
             SELECT Processes.id, Processes.agent_id, Processes.port, agent.name AS agent_name
             FROM Processes
             LEFT JOIN Agents AS agent ON Processes.agent_id = agent.id
-            WHERE Processes.id = \'{id}\'
+            WHERE Processes.agent_id = \'{id}\'
         ''')
         return Process.to_dict(row) if row else None
 

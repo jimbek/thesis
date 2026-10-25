@@ -8,7 +8,7 @@ from crud.routes.RestAPIs import get_restapis, get_restapi_by_id, add_restapi, e
 from crud.routes.Websites import get_websites, get_website_by_id, add_website, edit_website, delete_website
 from crud.routes.MCPServers import get_mcpservers, get_mcpserver_by_id, add_mcpserver, edit_mcpserver, delete_mcpserver
 from crud.routes.Agents import get_agents, get_agent_by_id, add_agent, edit_agent, delete_agent
-from crud.routes.Processes import get_processes, get_process_by_id, add_process, edit_process, delete_process
+from crud.routes.Processes import get_processes, get_process_by_agent_id, add_process, edit_process, delete_process
 
 from flask import Flask
 
@@ -64,7 +64,7 @@ app.add_url_rule('/agents/<id>', 'edit_agent', edit_agent, methods=['PUT'])
 app.add_url_rule('/agents/<id>', 'delete_agent', delete_agent, methods=['DELETE'])
 
 app.add_url_rule('/processes', 'get_processes', get_processes, methods=['GET'])
-app.add_url_rule('/processes/<id>', 'get_process_by_id', get_process_by_id, methods=['GET'])
+app.add_url_rule('/processes/agent/<id>', 'get_process_by_agent_id', get_process_by_agent_id, methods=['GET'])
 app.add_url_rule('/processes', 'add_process', add_process, methods=['POST'])
 app.add_url_rule('/processes/<id>', 'edit_process', edit_process, methods=['PUT'])
 app.add_url_rule('/processes/<id>', 'delete_process', delete_process, methods=['DELETE'])

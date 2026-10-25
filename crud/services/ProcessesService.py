@@ -10,10 +10,10 @@ class ProcessesService:
         processes = requests.get(f"{self.DOMAIN}/processes").json()
         return processes
 
-    # Retrieves an Process by its ID.
-    def get_by_id(self, id: str) -> dict:
-        response = requests.get(f"{self.DOMAIN}/processes/{id}")
-        return response.json()
+    # Retrieves a Process by its AI Agent ID.
+    def get_by_agent_id(self, id: str) -> dict:
+        response = requests.get(f"{self.DOMAIN}/processes/agent/{id}")
+        return None if response.status_code == 404 else response.json()
     
     # Adds a new Process.
     def add(self, data: dict) -> str:
