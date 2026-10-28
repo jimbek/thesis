@@ -41,29 +41,17 @@ with container:
     if container.button("New +", type="primary"):
         st.switch_page("crud/pages/process/add_process.py", query_params={"agent_id": agent_id})
 
-    header = container.columns([3.5, 0.5])
+    header = container.columns([4, 0.5])
     header[0].markdown("**Port**")
     header[1].markdown("**Ενέργειες**")
 
     for process in processes:
-        row = container.columns([3.5, 0.5])
+        row = container.columns([4, 0.5])
 
         row[0].markdown(process.get('port'))
 
-        action_buttons = row[1].columns(3)
+        action_buttons = row[1].columns(1)
         action_buttons[0].page_link(
-            "crud/pages/process/manage_process.py",
-            label = "",
-            icon = ":material/play_arrow:",
-            query_params = {"id": process['id']}
-        )
-        action_buttons[1].page_link(
-            "crud/pages/process/edit_process.py",
-            label = "",
-            icon = ":material/edit:",
-            query_params = {"id": process['id']}
-        )
-        action_buttons[2].page_link(
             "crud/pages/process/delete_process.py",
             label = "",
             icon = ":material/delete:",

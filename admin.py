@@ -25,7 +25,6 @@ pages = [
     st.Page("crud/pages/agent/delete_agent.py", title="Διαγραφή Agent", visibility = "hidden"),
     st.Page("crud/pages/process/all_processes.py", title="Processes", visibility = "hidden"),
     st.Page("crud/pages/process/add_process.py", title="Νέο Process", visibility = "hidden"),
-    st.Page("crud/pages/process/edit_process.py", title="Επεξεργασία Process", visibility = "hidden"),
     st.Page("crud/pages/process/delete_process.py", title="Διαγραφή Process", visibility = "hidden"),
     st.Page("crud/pages/process/manage_process.py", title="Διαχείριση Process", visibility = "hidden")
 ]

@@ -1,7 +1,8 @@
 # Describes the model for a Process entity.
 class Process:
-    def __init__(self, id: str, agent_id: str, port: int):
+    def __init__(self, id: str, pid: int, agent_id: str, port: int):
         self.id = id
+        self.pid = pid
         self.agent_id = agent_id
         self.port = port
 
@@ -9,9 +10,10 @@ class Process:
     def to_dict(row: dict):
         return {
             'id': row[0],
-            'agent_id': row[1],
-            'port': row[2],
-            'agent_name': row[3]
+            'pid': row[1],
+            'agent_id': row[2],
+            'port': row[3],
+            'agent_name': row[4]
         }
 
     # Returns a dictionary that describes an invalid Process instance.

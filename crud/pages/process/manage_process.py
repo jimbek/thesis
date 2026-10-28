@@ -31,15 +31,18 @@ with container:
 
     def run_process():
         container.toast(f"Εκκίνηση του process...")
+        st.rerun()
 
     def delete_process():
         container.toast(f"Διαγραφή του process...")
+        st.rerun()
 
     # Create side-by-side buttons using columns
     col1, col2 = st.columns([1.5, 1.5])
-    
-    if col1.button("Εκτέλεση", icon=":material/play_arrow:", use_container_width=True):
-        run_process()
 
-    if col2.button("Διαγραφή", icon=":material/delete:", use_container_width=True):
-        delete_process()
+    if process['pid'] and service.is_running(process['pid']):
+        if col1.button("Διακοπή", icon=":material/stop:", use_container_width=True):
+            delete_process()
+    else:
+        if col1.button("Εκτέλεση", icon=":material/play_arrow:", use_container_width=True):
+            run_process()

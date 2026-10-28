@@ -28,6 +28,7 @@ with container:
 
     if container.button("Save"):
         data = {
+            "pid": 0,
             "agent_id": agent_id,
             "port": port
         }

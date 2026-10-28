@@ -36,6 +36,8 @@ if agents_repo.table_exists('Agents') is False:
 
 if processes_repo.table_exists('Processes') is False:
     processes_repo.apply_migrations()
+else:
+    processes_repo.clear_all()
 
 app = Flask(__name__)
 

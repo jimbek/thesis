@@ -25,7 +25,14 @@ with container:
     container.html("Είστε σίγουροι ότι θέλετε να διαγράψετε το Process με port: <b>" + str(entry['port']) + "</b>;")
     
     if container.button("Διαγραφή"):
+        if entry.get('pid'):
+            result = service.delete_process(entry['pid'])
+            if result and 'error' in result:
+                container.error(result['error'])
+                st.stop()
+
         result = service.delete(id)
+        
         if result and 'error' in result:
             container.error(result['error'])
         else:

@@ -17,7 +17,7 @@ global container
 container = st.container()
 
 with container:
-    entry = service.get_by_id(id)
+    entry = service.get_by_agent_id(id)
     if isinstance(entry, dict) and "error" in entry:
         container.error(f"Σφάλμα: {entry['error']}")
         st.stop()
