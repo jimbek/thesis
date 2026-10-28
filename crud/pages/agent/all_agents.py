@@ -48,10 +48,10 @@ with container:
 
         action_buttons = row[4].columns(3)
         action_buttons[0].page_link(
-            "crud/pages/agent/manage_process.py",
+            "crud/pages/process/all_processes.py",
             label = "",
             icon = ":material/terminal:",
-            query_params = {"id": agent['id']}
+            query_params = {"agent_id": agent['id']}
         )
         action_buttons[1].page_link(
             "crud/pages/agent/edit_agent.py",

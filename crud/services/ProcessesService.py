@@ -10,10 +10,15 @@ class ProcessesService:
         processes = requests.get(f"{self.DOMAIN}/processes").json()
         return processes
 
-    # Retrieves a Process by its AI Agent ID.
-    def get_by_agent_id(self, id: str) -> dict:
-        response = requests.get(f"{self.DOMAIN}/processes/agent/{id}")
+    # Retrieves a Process by its ID.
+    def get_by_id(self, id: str) -> dict:
+        response = requests.get(f"{self.DOMAIN}/processes/{id}")
         return None if response.status_code == 404 else response.json()
+
+    # Retrieves a Process by its AI Agent ID.
+    def get_by_agent_id(self, id: str) -> list[dict]:
+        response = requests.get(f"{self.DOMAIN}/processes/agent/{id}").json()
+        return response
     
     # Adds a new Process.
     def add(self, data: dict) -> str:
@@ -30,14 +35,10 @@ class ProcessesService:
         response = requests.delete(f"{self.DOMAIN}/processes/{id}")
         return response
 
-    # Runs an existing Process as a subprocess.
-    def run_process(self, id: str) -> str:
+    # Runs the subprocess of a Process.
+    def run_process(self, process: dict, agent_name: str) -> str:
         pass
 
-    # Pauses a subprocess of an existing Process.
-    def pause_process(self, id: str) -> str:
-        pass
-
-    # Deletes the subprocess of an existing Process.
-    def delete_process(self, id: str) -> str:
+    # Deletes the subprocess of a Process.
+    def delete_process(self, process: dict) -> str:
         pass

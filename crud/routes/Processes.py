@@ -13,15 +13,22 @@ def get_processes():
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# GET /processes/agent/<id> - Get a Process by its ID.
-def get_process_by_agent_id(id):
+# GET /processes/<id> - Get a Process by its ID.
+def get_process_by_id(id):
     try:
-        result = repo.get_by_agent_id(id)
+        result = repo.get_by_id(id)
 
         if result is None:
             return {}, 404
 
         return result, 200
+    except Exception as error:
+        return {'error': f"Internal server error: {error}"}, 500
+
+# GET /processes/agent/<id> - Get Processes by their AI Agent ID.
+def get_processes_by_agent_id(id):
+    try:
+        return repo.get_by_agent_id(id), 200
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
