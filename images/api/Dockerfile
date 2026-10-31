@@ -10,6 +10,7 @@ COPY /crud/repos /app/crud/repos
 COPY /crud/routes /app/crud/routes
 
 COPY api.py /app/api.py
+COPY agent.py /app/agent.py
 
 # Install requirements.
 COPY images/api/requirements.txt /app/requirements.txt

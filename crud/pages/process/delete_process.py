@@ -26,14 +26,14 @@ with container:
     
     if container.button("Διαγραφή"):
         if entry.get('pid'):
-            result = service.delete_process(entry['pid'])
+            result = service.delete_process(entry.get('pid'))
             if result and 'error' in result:
-                container.error(result['error'])
+                container.error(f"Σφάλμα κατά τον τερματισμό της διεργασίας: {result['error']}")
                 st.stop()
 
         result = service.delete(id)
         
         if result and 'error' in result:
-            container.error(result['error'])
+            container.error(f"Σφάλμα κατά τη διαγραφή του Process: {result['error']}")
         else:
             st.switch_page("crud/pages/process/all_processes.py", query_params={"agent_id": entry.get('agent_id')})

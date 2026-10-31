@@ -50,8 +50,14 @@ with container:
 
         row[0].markdown(process.get('port'))
 
-        action_buttons = row[1].columns(1)
+        action_buttons = row[1].columns(2)
         action_buttons[0].page_link(
+            "crud/pages/process/chat_agent.py",
+            label = "",
+            icon = ":material/chat:",
+            query_params = {"id": process['id']}
+        )
+        action_buttons[1].page_link(
             "crud/pages/process/delete_process.py",
             label = "",
             icon = ":material/delete:",

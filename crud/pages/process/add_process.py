@@ -24,18 +24,30 @@ with container:
         container.error(f"Σφάλμα: {agent['error']}")
         st.stop()
     
-    port = container.text_input("Port")
+    port = container.number_input("Port", min_value=8000, max_value=8010, value=8001)
 
     if container.button("Save"):
+        payload = {
+            "port": port,
+            "system_prompt": agent.get('system_prompt'),
+            "llm": agent.get('llm'),
+            "mcp_server_ids": agent.get('mcp_server_ids')
+        }
+        
+        result = service.run_process(payload)
+        if isinstance(result, dict) and "error" in result:
+            container.error(f"Σφάλμα: {result['error']}")
+            st.stop()
+
         data = {
-            "pid": 0,
+            "pid": result.get('pid'),
             "agent_id": agent_id,
             "port": port
         }
 
         result = service.add(data)
-        
-        if result:
-            st.switch_page("crud/pages/process/all_processes.py", query_params={"agent_id": agent_id})
+        if isinstance(result, dict) and "error" in result:
+            container.error(f"Σφάλμα: {result['error']}")
+            st.stop()
         else:
-            container.error("Σφάλμα κατά την προσθήκη του Process.")
+            st.switch_page("crud/pages/process/all_processes.py", query_params={"agent_id": agent_id})
