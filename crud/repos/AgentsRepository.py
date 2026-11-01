@@ -13,10 +13,7 @@ class AgentsRepository(BaseRepository):
             CREATE TABLE IF NOT EXISTS Agents (
                 id TEXT PRIMARY KEY,
                 name TEXT,
-                system_prompt TEXT,
-                mcp_server_id TEXT,
-                llm TEXT,
-                FOREIGN KEY (mcp_server_id) REFERENCES MCPServers(id)
+                system_prompt TEXT
             )
         ''')
 
@@ -28,13 +25,23 @@ class AgentsRepository(BaseRepository):
                 FOREIGN KEY (mcp_server_id) REFERENCES MCPServers(id)
             )
         ''')
+
+    def seed_db(self):
+        super().seed_db('''
+            INSERT OR IGNORE INTO Agents (id, name, system_prompt) VALUES ("41265a2a-f9a3-81d9-5412-b5715342e070", "EDYP AI Agent", "Provides tools for public employee salary calculation and related information.");
+            INSERT OR IGNORE INTO Agents (id, name, system_prompt) VALUES ("41265a2a-f9a3-81d9-5412-b5715342e071", "Webmcp.com AI Agent", "Provides tools for interacting with webmcp.com website.");
+        ''')
+
+        super().seed_db('''
+            INSERT OR IGNORE INTO AgentMCPServers (agent_id, mcp_server_id) VALUES ("41265a2a-f9a3-81d9-5412-b5715342e070", "41275a2a-a9a3-81d9-9412-b5715342e070");
+            INSERT OR IGNORE INTO AgentMCPServers (agent_id, mcp_server_id) VALUES ("41265a2a-f9a3-81d9-5412-b5715342e071", "41275a2a-a9a3-81d9-9412-b5715342e073");
+        ''')
     
     # Retrieves all 'Agent' entries.
     def get_all(self):
         data = self.sql_get_all(f'''
-            SELECT Agents.id, Agents.name, Agents.system_prompt, Agents.llm, MCPServers.name
+            SELECT Agents.id, Agents.name, Agents.system_prompt
             FROM Agents
-            LEFT JOIN MCPServers ON Agents.mcp_server_id = MCPServers.id
         ''')
 
         mcp_server_ids = self.sql_get_all(f'''
@@ -57,9 +64,8 @@ class AgentsRepository(BaseRepository):
     # Retrieves an 'AI Agent' entry by its ID.
     def get_by_id(self, id: str):
         row = self.sql_get_one(f'''
-            SELECT Agents.id, Agents.name, Agents.system_prompt, Agents.llm, MCPServers.name
+            SELECT Agents.id, Agents.name, Agents.system_prompt
             FROM Agents
-            LEFT JOIN MCPServers ON Agents.mcp_server_id = MCPServers.id
             WHERE Agents.id = \'{id}\'
         ''')
 
@@ -79,7 +85,7 @@ class AgentsRepository(BaseRepository):
         if invalid:
             return invalid
 
-        self.sql_command(f'INSERT INTO Agents (id, name, system_prompt, llm) VALUES (\'{data['id']}\', \'{data['name']}\', \'{data['system_prompt']}\', \'{data['llm']}\')')
+        self.sql_command(f'INSERT INTO Agents (id, name, system_prompt) VALUES (\'{data['id']}\', \'{data['name']}\', \'{data['system_prompt']}\')')
         
         for mcp_server_id in data['mcp_server_ids']:
             self.sql_command(f'INSERT INTO AgentMCPServers (agent_id, mcp_server_id) VALUES (\'{data['id']}\', \'{mcp_server_id}\')')

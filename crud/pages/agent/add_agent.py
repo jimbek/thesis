@@ -1,13 +1,11 @@
 # This page allows the user to add a new AI Agent.
 from crud.services.AgentsService import AgentsService
 from crud.services.MCPServersService import MCPServersService
-from crud.services.LLMsService import LLMsService
 
 import streamlit as st
 
 service = AgentsService()
 mcp_servers_service = MCPServersService()
-llms_service = LLMsService()
 
 st.header("Δημιουργία AI Agent")
 
@@ -18,13 +16,6 @@ container = st.container()
 with container:
     name = container.text_input("Όνομα")
     system_prompt = container.text_area("System Prompt")
-
-    all_llms = llms_service.get_all()
-    llm = container.selectbox(
-        "LLM",
-        options=[None] + [llm for llm in all_llms],
-        format_func=lambda name: "None" if name is None else next(llm for llm in all_llms if llm == name)
-    )
 
     all_mcp_servers = mcp_servers_service.get_all()
     mcp_server_ids = container.multiselect(
@@ -37,7 +28,6 @@ with container:
         data = {
             "name": name,
             "system_prompt": system_prompt,
-            "llm": llm,
             "mcp_server_ids": mcp_server_ids
         }
 

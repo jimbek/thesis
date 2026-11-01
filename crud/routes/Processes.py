@@ -83,14 +83,13 @@ def run_process():
         data = request.get_json()
         if not data:
             return { "error": "Request body is required" }, 400
+
+        # Έλεγχος αν το port δεσμεύεται ήδη
+        if __is_port_open__(data.get("port")):
+            return { "error": f"Η θύρα {data.get('port')} είναι ήδη σε χρήση." }, 400
         
         payload_as_string = json.dumps(data)
         process = subprocess.Popen(["python", "agent.py", payload_as_string], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
-
-        # Δώστε του 2 δευτερόλεπτα και ελέγξτε αν ζει
-        # time.sleep(2)
-        # stdout, stderr = process.communicate()
-        # return { "error": f"Το agent.py κρασάρε! Το σφάλμα είναι: {stderr}" }, 500
 
         # Περιμένουμε μερικά δευτερόλεπτα να σηκωθεί ο server
         server_ready = False
@@ -152,6 +151,5 @@ def chat():
 
 # Checks if a given port is open and the Flask server is ready.
 def __is_port_open__(port):
-    """Ελέγχει αν η θύρα άνοιξε και ο Flask server είναι έτοιμος."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         return s.connect_ex(('127.0.0.1', port)) == 0

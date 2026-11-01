@@ -33,6 +33,7 @@ if mcpservers_repo.table_exists('MCPServers') is False:
 
 if agents_repo.table_exists('Agents') is False:
     agents_repo.apply_migrations()
+    agents_repo.seed_db()
 
 if processes_repo.table_exists('Processes') is False:
     processes_repo.apply_migrations()
@@ -78,7 +79,7 @@ app.add_url_rule('/processes/chat', 'chat', chat, methods=['POST'])
 @app.route('/')
 def index():
     return '''
-        Welcome!
+        Το API είναι ενεργό!
     '''
 
 if __name__ == '__main__':

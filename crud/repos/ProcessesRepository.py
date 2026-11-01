@@ -13,8 +13,9 @@ class ProcessesRepository(BaseRepository):
             CREATE TABLE IF NOT EXISTS Processes (
                 id TEXT PRIMARY KEY,
                 pid INTEGER,
+                llm TEXT,
                 agent_id TEXT,
-                port INTEGER,
+                port INTEGER UNIQUE,
                 FOREIGN KEY (agent_id) REFERENCES Agents(id)
             )
         ''')
@@ -22,7 +23,7 @@ class ProcessesRepository(BaseRepository):
     # Retrieves all 'Process' entries.
     def get_all(self):
         data = self.sql_get_all(f'''
-            SELECT Processes.id, Processes.pid, Processes.agent_id, Processes.port, agent.name AS agent_name
+            SELECT Processes.id, Processes.pid, Processes.llm, Processes.agent_id, Processes.port, agent.name AS agent_name
             FROM Processes
             LEFT JOIN Agents AS agent ON Processes.agent_id = agent.id
         ''')
@@ -32,7 +33,7 @@ class ProcessesRepository(BaseRepository):
     # Retrieves a 'Process' entry by its ID.
     def get_by_id(self, id: str):
         row = self.sql_get_one(f'''
-            SELECT Processes.id, Processes.pid, Processes.agent_id, Processes.port, agent.name AS agent_name
+            SELECT Processes.id, Processes.pid, Processes.llm, Processes.agent_id, Processes.port, agent.name AS agent_name
             FROM Processes
             LEFT JOIN Agents AS agent ON Processes.agent_id = agent.id
             WHERE Processes.id = \'{id}\'
@@ -42,7 +43,7 @@ class ProcessesRepository(BaseRepository):
     # Retrieves 'Process' entries by their AI Agent ID.
     def get_by_agent_id(self, id: str):
         data = self.sql_get_all(f'''
-            SELECT Processes.id, Processes.pid, Processes.agent_id, Processes.port, agent.name AS agent_name
+            SELECT Processes.id, Processes.pid, Processes.llm, Processes.agent_id, Processes.port, agent.name AS agent_name
             FROM Processes
             LEFT JOIN Agents AS agent ON Processes.agent_id = agent.id
             WHERE Processes.agent_id = \'{id}\'
@@ -57,7 +58,10 @@ class ProcessesRepository(BaseRepository):
         if invalid:
             return invalid
 
-        self.sql_command(f'INSERT INTO Processes (id, pid, agent_id, port) VALUES (\'{data['id']}\', \'{data['pid']}\', \'{data['agent_id']}\', \'{data['port']}\')')
+        if self.exists('port', str(data['port'])):
+            return {'error': 'Υπάρχει ήδη διαδικασία με αυτόν τον port.'}
+
+        self.sql_command(f'INSERT INTO Processes (id, pid, llm, agent_id, port) VALUES (\'{data['id']}\', \'{data['pid']}\', \'{data['llm']}\', \'{data['agent_id']}\', \'{data['port']}\')')
 
         return data['id']
 
@@ -74,6 +78,9 @@ class ProcessesRepository(BaseRepository):
 
         if not self.exists('id', id):
             return {'error': 'Δεν υπάρχει διαδικασία με αυτό το ID.'}
+
+        if self.exists('port', str(data['port'])) and self.get_by_id(id)['port'] != data['port']:
+            return {'error': 'Υπάρχει ήδη διαδικασία με αυτόν τον port.'}
         
         set_clause = ', '.join([f'{key} = \'{value}\'' for key, value in data.items()])
         self.sql_command(f'UPDATE Processes SET {set_clause} WHERE id = \'{id}\'')

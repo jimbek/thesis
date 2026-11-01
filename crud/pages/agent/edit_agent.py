@@ -1,7 +1,6 @@
 # This page allows the user to edit an existing AI Agent.
 from crud.services.AgentsService import AgentsService
 from crud.services.MCPServersService import MCPServersService
-from crud.services.LLMsService import LLMsService
 
 import streamlit as st
 
@@ -12,7 +11,6 @@ if not id:
 
 service = AgentsService()
 mcp_servers_service = MCPServersService()
-llms_service = LLMsService()
 
 st.header("Επεξεργασία AI Agent")
 
@@ -29,14 +27,6 @@ with container:
     name = container.text_input("Όνομα", value=agent.get('name') if agent else "")
     system_prompt = container.text_area("System Prompt", value=agent.get('system_prompt') if agent else "")
 
-    all_llms = llms_service.get_all()
-    llm = container.selectbox(
-        "LLM",
-        options=[None] + [llm for llm in all_llms],
-        format_func=lambda name: "None" if name is None else next(llm for llm in all_llms if llm == name),
-        index = ([None] + [llm for llm in all_llms]).index(agent.get('llm'))
-    )
-
     all_mcp_servers = mcp_servers_service.get_all()
     mcp_server_ids = container.multiselect(
         "MCP Servers",
@@ -49,7 +39,6 @@ with container:
         data = {
             "name": name,
             "system_prompt": system_prompt,
-            "llm": llm,
             "mcp_server_ids": mcp_server_ids
         }
 

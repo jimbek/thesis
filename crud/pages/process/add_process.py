@@ -1,6 +1,7 @@
 # This page allows the user to add a new Process.
 from crud.services.ProcessesService import ProcessesService
 from crud.services.AgentsService import AgentsService
+from crud.services.LLMsService import LLMsService
 
 import streamlit as st
 
@@ -11,6 +12,7 @@ if not agent_id:
 
 service = ProcessesService()
 agent_service = AgentsService()
+llms_service = LLMsService()
 
 st.header("Προσθήκη Process")
 
@@ -26,15 +28,26 @@ with container:
     
     port = container.number_input("Port", min_value=8000, max_value=8010, value=8001)
 
+    all_llms = llms_service.get_all()
+    llm = container.selectbox(
+        "LLM",
+        options=[None] + [llm for llm in all_llms],
+        format_func=lambda name: "None" if name is None else next(llm for llm in all_llms if llm == name)
+    )
+
     if container.button("Save"):
         if port not in range(8000, 8011):
             st.toast("Ο port πρέπει να είναι μεταξύ 8000 και 8010.")
+            st.stop()
+
+        if not llm:
+            st.toast("Πρέπει να επιλέξετε ένα LLM.")
             st.stop()
         
         payload = {
             "port": port,
             "system_prompt": agent.get('system_prompt'),
-            "llm": agent.get('llm'),
+            "llm": llm,
             "mcp_server_ids": agent.get('mcp_server_ids')
         }
         
@@ -45,12 +58,14 @@ with container:
 
         data = {
             "pid": result.get('pid'),
+            "llm": llm,
             "agent_id": agent_id,
             "port": port
         }
 
         result = service.add(data)
         if isinstance(result, dict) and "error" in result:
+            service.delete_process(data['pid'])
             container.error(f"Σφάλμα: {result['error']}")
             st.stop()
         else:

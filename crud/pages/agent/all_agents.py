@@ -31,22 +31,20 @@ with container:
     if container.button("New +", type="primary"):
         st.switch_page("crud/pages/agent/add_agent.py")
 
-    header = container.columns([1.5, 3.5, 1, 1.5, 0.5])
+    header = container.columns([1.5, 3.5, 1.5, 0.5])
     header[0].markdown("**Όνομα**")
     header[1].markdown("**Οδηγίες**")
-    header[2].markdown("**LLM**")
-    header[3].markdown("**# MCP Servers**")
-    header[4].markdown("**Ενέργειες**")
+    header[2].markdown("**# MCP Servers**")
+    header[3].markdown("**Ενέργειες**")
 
     for agent in service.get_all():
-        row = container.columns([1.5, 3.5, 1, 1.5, 0.5])
+        row = container.columns([1.5, 3.5, 1.5, 0.5])
 
         row[0].markdown(agent.get('name'))
         row[1].markdown(agent.get('system_prompt'))
-        row[2].markdown(agent.get('llm'))
-        row[3].markdown(len(agent.get('mcp_server_ids')))
+        row[2].markdown(len(agent.get('mcp_server_ids')))
 
-        action_buttons = row[4].columns(3)
+        action_buttons = row[3].columns(3)
         action_buttons[0].page_link(
             "crud/pages/process/all_processes.py",
             label = "",

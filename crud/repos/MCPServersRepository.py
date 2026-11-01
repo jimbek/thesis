@@ -23,12 +23,10 @@ class MCPServersRepository(BaseRepository):
 
     def seed_db(self):
         super().seed_db('''
-            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e070", "Ε.Δ.ΥΠ MCP Server", "Instructions for Ε.Δ.ΥΠ MCP Server", "31625a2a-a9a3-41a9-9412-c5705341e070", NULL);
-            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e071", "ΚΗΜΔΗΣ MCP Server", "Instructions for ΚΗΜΔΗΣ MCP Server", "31625a2a-a9a3-41a9-9412-c5705341e071", NULL);
-            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e072", "Petstore MCP Server", "Instructions for Petstore MCP Server", "31625a2a-a9a3-41a9-9412-c5705341e073", NULL);
-            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e073", "WebMCP MCP Server", "Instructions for WebMCP MCP Server", NULL, "71625d2a-a4a3-41a9-9412-f5706341e010");
-            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e074", "OpenAI MCP Server", "Instructions for OpenAI MCP Server", NULL, "71625d2a-a4a3-41a9-9412-f5706341e011");
-            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e075", "Target.com MCP Server", "Instructions for Target.com MCP Server", NULL, "71625d2a-a4a3-41a9-9412-f5706341e013");
+            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e070", "EDYP MCP Server", "Provides tools for public employee salary calculation and related information.", "31625a2a-a9a3-41a9-9412-c5705341e070", NULL);
+            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e071", "Petstore MCP Server", "Provides tools for managing the Petstore API.", "31625a2a-a9a3-41a9-9412-c5705341e071", NULL);
+            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e072", "WebMCP MCP Server", "Provides tools for interacting with webmcp.com website.", NULL, "71625d2a-a4a3-41a9-9412-f5706341e010");
+            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e073", "Webmcp.com MCP Server", "Provides tools for interacting with webmcp.com website.", NULL, "71625d2a-a4a3-41a9-9412-f5706341e010");
         ''')
     
     # Retrieves all 'MCPServer' entries including the name of the associated REST API and website.

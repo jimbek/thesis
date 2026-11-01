@@ -22,8 +22,7 @@ class RestAPIsRepository(BaseRepository):
     def seed_db(self):
         super().seed_db('''
             INSERT OR IGNORE INTO RestAPIs (id, name, description, domain, openapi_spec) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e070", "Ε.Δ.ΥΠ. - Εργαλεία Δημοσίων Υπαλλήλων", "Παρέχει endpoints για τον υπολογισμό μισθού δημοσίου υπαλλήλου και τη λήψη πληροφοριών αναφορικά με μισθοδοσία, επιδόματα, κρατήσεις και φορολογία.", "https://edyp.gr", "/v3/api-docs");
-            INSERT OR IGNORE INTO RestAPIs (id, name, description, domain, openapi_spec) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e071", "ΚΗΜΔΗΣ Open Data (Κεντρικό Ηλεκτρονικό Μητρώο Δημοσίων Συμβάσεων)", "Όλες οι δημόσιες συμβάσεις, προκηρύξεις, αναθέσεις και εντολές πληρωμών του ελληνικού δημοσίου.", "https://cerpp.eprocurement.gov.gr/khmdhs-opendata", "/v3/api-docs");
-            INSERT OR IGNORE INTO RestAPIs (id, name, description, domain, openapi_spec) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e073", "Petstore", "This is a sample Pet Store Server based on the OpenAPI 3.0 specification.", "https://petstore3.swagger.io", "/api/v3/openapi.json");
+            INSERT OR IGNORE INTO RestAPIs (id, name, description, domain, openapi_spec) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e071", "Petstore", "This is a sample Pet Store Server based on the OpenAPI 3.0 specification.", "https://petstore3.swagger.io", "/api/v3/openapi.json");
         ''')
     
     # Retrieves all 'RestAPI' entries.
