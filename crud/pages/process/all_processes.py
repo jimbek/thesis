@@ -41,25 +41,24 @@ with container:
     if container.button("New +", type="primary"):
         st.switch_page("crud/pages/process/add_process.py", query_params={"agent_id": agent_id})
 
-    header = container.columns([4, 0.5])
+    header = container.columns([3, 1.5])
     header[0].markdown("**Port**")
     header[1].markdown("**Ενέργειες**")
 
     for process in processes:
-        row = container.columns([4, 0.5])
+        row = container.columns([3, 1.5])
 
         row[0].markdown(process.get('port'))
 
         action_buttons = row[1].columns(2)
         action_buttons[0].page_link(
-            "crud/pages/process/chat_agent.py",
-            label = "",
-            icon = ":material/chat:",
-            query_params = {"id": process['id']}
+            f"http://localhost:8501/app/static/chat.html?port={process['port']}",
+            label="Πήγαινε στο chat",
+            icon=":material/chat:"
         )
         action_buttons[1].page_link(
             "crud/pages/process/delete_process.py",
-            label = "",
+            label = "Διαγραφή",
             icon = ":material/delete:",
             query_params = {"id": process['id']}
         )

@@ -11,6 +11,7 @@ from crud.routes.Agents import get_agents, get_agent_by_id, add_agent, edit_agen
 from crud.routes.Processes import get_processes, get_process_by_id, get_processes_by_agent_id, add_process, edit_process, delete_process, run_process, terminate_process, chat
 
 from flask import Flask
+from flask_cors import CORS
 
 restapis_repo = RestAPIsRepository()
 websites_repo = WebsitesRepository()
@@ -41,6 +42,7 @@ else:
     processes_repo.clear_all()
 
 app = Flask(__name__)
+CORS(app)
 
 app.add_url_rule('/restapis', 'get_restapis', get_restapis, methods=['GET'])
 app.add_url_rule('/restapis/<id>', 'get_restapi_by_id', get_restapi_by_id, methods=['GET'])

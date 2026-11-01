@@ -12,6 +12,9 @@ COPY /crud/services /app/crud/services
 
 COPY admin.py /app/admin.py
 
+COPY /.streamlit /app/.streamlit
+COPY /static /app/static
+
 # Install requirements
 COPY images/streamlit/requirements.txt /app/requirements.txt
 

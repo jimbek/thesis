@@ -25,8 +25,7 @@ pages = [
     st.Page("crud/pages/agent/delete_agent.py", title="Διαγραφή Agent", visibility = "hidden"),
     st.Page("crud/pages/process/all_processes.py", title="Processes", visibility = "hidden"),
     st.Page("crud/pages/process/add_process.py", title="Νέο Process", visibility = "hidden"),
-    st.Page("crud/pages/process/delete_process.py", title="Διαγραφή Process", visibility = "hidden"),
-    st.Page("crud/pages/process/chat_agent.py", title="Chat Agent", visibility = "hidden")
+    st.Page("crud/pages/process/delete_process.py", title="Διαγραφή Process", visibility = "hidden")
 ]
 
 pg = st.navigation(pages)
