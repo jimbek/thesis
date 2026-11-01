@@ -16,6 +16,9 @@ COPY agent.py /app/agent.py
 COPY images/api/requirements.txt /app/requirements.txt
 RUN pip install -r requirements.txt
 
+RUN playwright install chromium
+RUN playwright install msedge
+
 # Expose the port the app runs on.
 EXPOSE 5000
 

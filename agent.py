@@ -3,14 +3,18 @@ import json
 import requests
 import sys
 
-from flask import Flask, request, jsonify
 from fastmcp import FastMCP
-from langchain_ollama import ChatOllama
+from flask import Flask, request, jsonify
 from langchain.mcp import MCPAdapter
 from langgraph.prebuilt import create_react_agent
+from langchain_core.tools import StructuredTool
+from langchain_ollama import ChatOllama
+from playwright.async_api import async_playwright
+from playwright.sync_api import sync_playwright
 
-from crud.repos.RestAPIsRepository import RestAPIsRepository
 from crud.repos.MCPServersRepository import MCPServersRepository
+from crud.repos.RestAPIsRepository import RestAPIsRepository
+from crud.repos.WebsitesRepository import WebsitesRepository
 
 global payload
 global model
@@ -21,6 +25,7 @@ tools = []
 
 rest_apis_repo = RestAPIsRepository()
 mcp_servers_repo = MCPServersRepository()
+websites_repo = WebsitesRepository()
 
 # Συνάρτηση για την απόκτηση εργαλείων από το OpenAPI spec μέσω του MCP server.
 async def add_tools_from_api(data: dict):
@@ -82,6 +87,73 @@ async def add_tools_from_api(data: dict):
 
     tools.extend(mcp_tools)
 
+# Συνάρτηση για την απόκτηση εργαλείων από Website με WebMCP standart.
+async def add_tools_from_website(data: dict):
+    domain = data.get("domain")
+
+    pure_langchain_tools = []
+
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(channel="msedge")
+        page = await browser.new_page()
+        
+        await page.goto(domain) 
+        await page.wait_for_load_state("networkidle")
+
+        web_tools = await page.evaluate("""
+            async () => {
+                if (!document.modelContext) return [];
+                const rawTools = await document.modelContext.getTools();
+                return rawTools.map(t => ({
+                    name: t.name,
+                    description: t.description
+                }));
+            }
+        """)
+        
+        if not web_tools:
+            await browser.close()
+            return
+
+        for tool in web_tools:
+            tool_name = tool['name']
+            tool_desc = tool['description']
+
+            def make_browser_call(t_name=tool_name):
+                def execute_in_page(query: str = ""):
+                    with sync_playwright() as playwright:
+                        web_browser = playwright.chromium.launch(channel="msedge")
+                        web_page = web_browser.new_page()
+
+                        tool_args = {"query": query} if query else {}
+
+                        result_json = web_page.evaluate("""
+                            async ([name, args]) => {
+                                try {
+                                    const res = await document.modelContext.executeTool(name, args);
+                                    return JSON.stringify(res);
+                                } catch (err) {
+                                    return JSON.stringify({ error: err.message });
+                                }
+                            }
+                        """, [t_name, tool_args])
+
+                        web_browser.close()
+                    
+                    return result_json
+                return execute_in_page
+
+            lc_tool = StructuredTool.from_function(
+                name=tool_name,
+                description=tool_desc,
+                func=make_browser_call(tool_name)
+            )
+            pure_langchain_tools.append(lc_tool)
+
+        await browser.close()
+
+        tools.extend(pure_langchain_tools)
+
 # Κατά την εκκίνηση του agent ελέγχουμε αν μας δόθηκε το payload
 if len(sys.argv) < 2:
     print("Σφάλμα: Δεν δόθηκε payload στον Agent.")
@@ -117,12 +189,13 @@ for server_id in mcp_server_ids:
 
 # Για κάθε MCP Server με βάση το πεδίο 'type' βρίσκουμε τα συσχετιζόμενα εργαλεία.
 for mcp_server in mcp_servers:
+    mcp_server_name = mcp_server.get("name")
+
     if mcp_server.get("type") == "Rest API":
         rest_api = rest_apis_repo.get_by_id(mcp_server.get("restapi_id"))
         if not rest_api:
             continue
 
-        mcp_server_name = mcp_server.get("name")
         openapi_spec = rest_api.get("openapi_spec")
         domain = rest_api.get("domain")
 
@@ -133,6 +206,18 @@ for mcp_server in mcp_servers:
                 "mcp_server_name": mcp_server_name
             }
             asyncio.run(add_tools_from_api(data))
+    elif mcp_server.get("type") == "Website":
+        website = websites_repo.get_by_id(mcp_server.get("website_id"))
+        if not website:
+            continue
+
+        domain = website.get("domain")
+
+        if domain:
+            data = {
+                "domain": domain
+            }
+            asyncio.run(add_tools_from_website(data))
 
 # Αφού έχουμε προσθέσει όλα τα εργαλεία από τα Rest APIs, μπορούμε να συνεχίσουμε με την εκκίνηση του agent.
 agent = create_react_agent(model=model, prompt=payload.get("system_prompt"), tools=tools)

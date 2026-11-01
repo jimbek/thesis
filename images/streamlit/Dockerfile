@@ -17,6 +17,3 @@ COPY admin.py /app/admin.py
 COPY images/streamlit/requirements.txt /app/requirements.txt
 
 RUN pip install -r requirements.txt
-
-# RUN playwright install chromium
-# RUN playwright install msedge

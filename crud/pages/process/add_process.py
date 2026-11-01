@@ -27,6 +27,10 @@ with container:
     port = container.number_input("Port", min_value=8000, max_value=8010, value=8001)
 
     if container.button("Save"):
+        if port not in range(8000, 8011):
+            st.toast("Ο port πρέπει να είναι μεταξύ 8000 και 8010.")
+            st.stop()
+        
         payload = {
             "port": port,
             "system_prompt": agent.get('system_prompt'),
