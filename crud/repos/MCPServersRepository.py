@@ -26,7 +26,7 @@ class MCPServersRepository(BaseRepository):
             INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e070", "EDYP MCP Server", "Provides tools for public employee salary calculation and related information.", "31625a2a-a9a3-41a9-9412-c5705341e070", NULL);
             INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e071", "Petstore MCP Server", "Provides tools for managing the Petstore API.", "31625a2a-a9a3-41a9-9412-c5705341e071", NULL);
             INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e072", "WebMCP MCP Server", "Provides tools for interacting with webmcp.com website.", NULL, "71625d2a-a4a3-41a9-9412-f5706341e010");
-            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e073", "Webmcp.com MCP Server", "Provides tools for interacting with webmcp.com website.", NULL, "71625d2a-a4a3-41a9-9412-f5706341e010");
+            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e073", "Redbus.com MCP Server", "Provides tools for interacting with redbus.com website.", NULL, "71625d2a-a4a3-41a9-9412-f5706341e011");
         ''')
     
     # Retrieves all 'MCPServer' entries including the name of the associated REST API and website.

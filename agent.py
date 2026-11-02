@@ -10,7 +10,7 @@ from langgraph.prebuilt import create_react_agent
 from langchain_core.tools import StructuredTool
 from langchain_ollama import ChatOllama
 from playwright.async_api import async_playwright
-from playwright.sync_api import sync_playwright
+from typing import Any
 
 from crud.repos.MCPServersRepository import MCPServersRepository
 from crud.repos.RestAPIsRepository import RestAPIsRepository
@@ -51,27 +51,49 @@ async def add_tools_from_api(data: dict):
 
 # Συνάρτηση για την απόκτηση εργαλείων από Website με WebMCP standart.
 async def add_tools_from_website(data: dict):
+    def create_tool(domain: str, tool_name: str):
+        async def dynamic_tool(**kwargs) -> Any:
+            async with async_playwright() as p:
+                browser = await p.chromium.launch(
+                    headless=True,  # <--- ΑΛΛΑΓΗ: True για Docker
+                    args=[
+                        "--enable-features=WebMCP",
+                        "--no-sandbox",                     # <--- ΠΡΟΣΘΗΚΗ
+                        "--disable-setuid-sandbox",         # <--- ΠΡΟΣΘΗΚΗ
+                        "--disable-dev-shm-usage"           # <--- ΠΡΟΣΘΗΚΗ
+                    ]
+                )
+
+                page = await browser.new_page()
+                await page.goto(domain)
+
+                result = await page.webmcp.call_tool(name=tool_name, input=kwargs)
+
+                await browser.close()
+                return result
+        
+        dynamic_tool.__name__ = tool_name
+        return dynamic_tool
+
     domain = data.get("domain")
 
     pure_langchain_tools = []
 
     async with async_playwright() as p:
-        browser = await p.chromium.launch(channel="msedge")
-        page = await browser.new_page()
+        browser = await p.chromium.launch(
+            headless=True,  # <--- ΑΛΛΑΓΗ: True για Docker
+            args=[
+                "--enable-features=WebMCP",
+                "--no-sandbox",                     # <--- ΠΡΟΣΘΗΚΗ
+                "--disable-setuid-sandbox",         # <--- ΠΡΟΣΘΗΚΗ
+                "--disable-dev-shm-usage"           # <--- ΠΡΟΣΘΗΚΗ
+            ]
+        )
         
+        page = await browser.new_page()
         await page.goto(domain) 
-        await page.wait_for_load_state("networkidle")
 
-        web_tools = await page.evaluate("""
-            async () => {
-                if (!document.modelContext) return [];
-                const rawTools = await document.modelContext.getTools();
-                return rawTools.map(t => ({
-                    name: t.name,
-                    description: t.description
-                }));
-            }
-        """)
+        web_tools = await page.webmcp.tools()
         
         if not web_tools:
             await browser.close()
@@ -80,36 +102,17 @@ async def add_tools_from_website(data: dict):
         for tool in web_tools:
             tool_name = tool['name']
             tool_desc = tool['description']
+            input_schema = tool.get("inputSchema", {"type": "object", "properties": {}})
 
-            def make_browser_call(t_name=tool_name):
-                def execute_in_page(query: str = ""):
-                    with sync_playwright() as playwright:
-                        web_browser = playwright.chromium.launch(channel="msedge")
-                        web_page = web_browser.new_page()
-
-                        tool_args = {"query": query} if query else {}
-
-                        result_json = web_page.evaluate("""
-                            async ([name, args]) => {
-                                try {
-                                    const res = await document.modelContext.executeTool(name, args);
-                                    return JSON.stringify(res);
-                                } catch (err) {
-                                    return JSON.stringify({ error: err.message });
-                                }
-                            }
-                        """, [t_name, tool_args])
-
-                        web_browser.close()
-                    
-                    return result_json
-                return execute_in_page
-
+            func = create_tool(domain, tool_name)
+            
             lc_tool = StructuredTool.from_function(
+                coroutine=func,
                 name=tool_name,
                 description=tool_desc,
-                func=make_browser_call(tool_name)
+                args_schema=input_schema
             )
+            
             pure_langchain_tools.append(lc_tool)
 
         await browser.close()
