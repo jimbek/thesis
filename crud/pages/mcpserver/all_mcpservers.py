@@ -31,22 +31,20 @@ with container:
     if container.button("New +", type="primary"):
         st.switch_page("crud/pages/mcpserver/add_mcpserver.py")
 
-    header = container.columns([1.5, 3.5, 1, 1.5, 0.5])
+    header = container.columns([2, 1, 1.5, 0.5])
     header[0].markdown("**Όνομα**")
-    header[1].markdown("**Οδηγίες**")
-    header[2].markdown("**Τύπος**")
-    header[3].markdown("**Πηγή**")
-    header[4].markdown("**Ενέργειες**")
+    header[1].markdown("**Τύπος**")
+    header[2].markdown("**Πηγή**")
+    header[3].markdown("**Ενέργειες**")
 
     for mcpserver in service.get_all():
-        row = container.columns([1.5, 3.5, 1, 1.5, 0.5])
+        row = container.columns([2, 1, 1.5, 0.5])
 
         row[0].markdown(mcpserver.get('name'))
-        row[1].markdown(mcpserver.get('instructions'))
-        row[2].markdown(mcpserver.get('type'))
-        row[3].markdown(mcpserver.get('source'))
+        row[1].markdown(mcpserver.get('type'))
+        row[2].markdown(mcpserver.get('source'))
 
-        action_buttons = row[4].columns(2)
+        action_buttons = row[3].columns(2)
         action_buttons[0].page_link(
             "crud/pages/mcpserver/edit_mcpserver.py",
             label = "",

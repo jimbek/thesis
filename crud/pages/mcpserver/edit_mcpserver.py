@@ -27,7 +27,6 @@ with container:
         st.stop()
     
     name = container.text_input("Όνομα", value=mcpserver.get('name') if mcpserver else "")
-    instructions = container.text_area("Οδηγίες", value=mcpserver.get('instructions') if mcpserver else "")
 
     all_rest_apis = rest_apis_service.get_all()
     rest_api_id = container.selectbox(
@@ -48,7 +47,6 @@ with container:
     if container.button("Save"):
         data = {
             "name": name,
-            "instructions": instructions,
             "restapi_id": rest_api_id,
             "website_id": website_id
         }

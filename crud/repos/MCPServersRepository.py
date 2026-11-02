@@ -13,7 +13,6 @@ class MCPServersRepository(BaseRepository):
             CREATE TABLE IF NOT EXISTS MCPServers (
                 id TEXT PRIMARY KEY,
                 name TEXT,
-                instructions TEXT,
                 restapi_id TEXT,
                 website_id TEXT,
                 FOREIGN KEY (restapi_id) REFERENCES RestAPIs(id),
@@ -23,16 +22,16 @@ class MCPServersRepository(BaseRepository):
 
     def seed_db(self):
         super().seed_db('''
-            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e070", "EDYP MCP Server", "Provides tools for public employee salary calculation and related information.", "31625a2a-a9a3-41a9-9412-c5705341e070", NULL);
-            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e071", "Petstore MCP Server", "Provides tools for managing the Petstore API.", "31625a2a-a9a3-41a9-9412-c5705341e071", NULL);
-            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e072", "WebMCP MCP Server", "Provides tools for interacting with webmcp.com website.", NULL, "71625d2a-a4a3-41a9-9412-f5706341e010");
-            INSERT OR IGNORE INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e073", "Redbus.com MCP Server", "Provides tools for interacting with redbus.com website.", NULL, "71625d2a-a4a3-41a9-9412-f5706341e011");
+            INSERT OR IGNORE INTO MCPServers (id, name, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e070", "EDYP MCP Server", "31625a2a-a9a3-41a9-9412-c5705341e070", NULL);
+            INSERT OR IGNORE INTO MCPServers (id, name, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e071", "Petstore MCP Server", "31625a2a-a9a3-41a9-9412-c5705341e071", NULL);
+            INSERT OR IGNORE INTO MCPServers (id, name, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e072", "WebMCP MCP Server", NULL, "71625d2a-a4a3-41a9-9412-f5706341e010");
+            INSERT OR IGNORE INTO MCPServers (id, name, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e073", "Redbus.com MCP Server", NULL, "71625d2a-a4a3-41a9-9412-f5706341e011");
         ''')
     
     # Retrieves all 'MCPServer' entries including the name of the associated REST API and website.
     def get_all(self):
         data = self.sql_get_all(f'''
-            SELECT MCPServers.id, MCPServers.name, MCPServers.instructions, MCPServers.restapi_id, MCPServers.website_id, restapi.name AS restapi_name, website.name AS website_name
+            SELECT MCPServers.id, MCPServers.name, MCPServers.restapi_id, MCPServers.website_id, restapi.name AS restapi_name, website.name AS website_name
             FROM MCPServers
             LEFT JOIN RestAPIs AS restapi ON MCPServers.restapi_id = restapi.id
             LEFT JOIN Websites AS website ON MCPServers.website_id = website.id
@@ -43,7 +42,7 @@ class MCPServersRepository(BaseRepository):
     # Retrieves an 'MCPServer' entry by its ID.
     def get_by_id(self, id: str):
         row = self.sql_get_one(f'''
-            SELECT MCPServers.id, MCPServers.name, MCPServers.instructions, MCPServers.restapi_id, MCPServers.website_id, restapi.name AS restapi_name, website.name AS website_name
+            SELECT MCPServers.id, MCPServers.name, MCPServers.restapi_id, MCPServers.website_id, restapi.name AS restapi_name, website.name AS website_name
             FROM MCPServers
             LEFT JOIN RestAPIs AS restapi ON MCPServers.restapi_id = restapi.id
             LEFT JOIN Websites AS website ON MCPServers.website_id = website.id
@@ -59,7 +58,7 @@ class MCPServersRepository(BaseRepository):
         if invalid:
             return invalid
 
-        self.sql_command(f'INSERT INTO MCPServers (id, name, instructions, restapi_id, website_id) VALUES (\'{data['id']}\', \'{data['name']}\', \'{data['instructions']}\', \'{data['restapi_id']}\', \'{data['website_id']}\')')
+        self.sql_command(f'INSERT INTO MCPServers (id, name, restapi_id, website_id) VALUES (\'{data['id']}\', \'{data['name']}\', \'{data['restapi_id']}\', \'{data['website_id']}\')')
 
         return data['id']
 

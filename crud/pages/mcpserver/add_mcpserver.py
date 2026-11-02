@@ -17,7 +17,6 @@ container = st.container()
 
 with container:
     name = container.text_input("Όνομα")
-    instructions = container.text_area("Οδηγίες")
 
     all_rest_apis = rest_apis_service.get_all()
     rest_api_id = container.selectbox(
@@ -36,7 +35,6 @@ with container:
     if container.button("Save"):
         data = {
             "name": name,
-            "instructions": instructions,
             "restapi_id": rest_api_id,
             "website_id": website_id
         }
