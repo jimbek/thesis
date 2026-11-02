@@ -1,6 +1,6 @@
 import asyncio
 import json
-import requests
+import httpx
 import sys
 
 from fastmcp import FastMCP
@@ -33,59 +33,21 @@ async def add_tools_from_api(data: dict):
     openapi_spec = data.get("openapi_spec")
     mcp_server_name = data.get("mcp_server_name")
 
-    mcp_server = FastMCP(mcp_server_name)
+    http_client = httpx.AsyncClient(base_url=domain)
 
-    try:
-        response = requests.get(domain + openapi_spec, timeout=10)
-        schema = response.json()
-        paths = schema.get("paths", {})
-    except Exception as e:
-        paths = {}
-        
-    for path, methods in paths.items():
-        for method, details in methods.items():
-            if method.lower() not in ["get", "post", "put", "delete"]:
-                continue
+    openapi_spec_json = httpx.get(domain + openapi_spec).json()
 
-            operation_id = details.get("operationId")
-            summary = details.get("summary", f"Κλήση του {method.upper()} {path}")
-            
-            if not operation_id:
-                operation_id = f"{method}_{path.replace('/', '_').strip('_')}"
-            
-            operation_id = operation_id.replace("-", "_").replace(".", "_")
+    mcp_server = FastMCP.from_openapi(
+        name=mcp_server_name,
+        client=http_client,
+        openapi_spec=openapi_spec_json
+    )
 
-            def make_api_call(target_path=path, target_method=method):
-                def dynamic_tool(query: str = ""):
-                    url = f"{domain}{target_path}"
-                    params = {"q": query} if query else {}
-                    
-                    if target_method.lower() == "get":
-                        res = requests.get(url, params=params, timeout=10)
-                    elif target_method.lower() == "post":
-                        res = requests.post(url, json=params, timeout=10)
-                    elif target_method.lower() == "put":
-                        res = requests.put(url, json=params, timeout=10)
-                    elif target_method.lower() == "delete":
-                        res = requests.delete(url, json=params, timeout=10)
-                    else:
-                        return f"Unsupported method: {target_method}"
-                        
-                    return res.json() if res.status_code == 200 else f"Error {res.status_code}: {res.text}"
-                return dynamic_tool
-
-            tool_func = make_api_call()
-            tool_func.__name__ = operation_id
-            tool_func.__doc__ = f"{summary}\n\nPath: {path}\nMethod: {method.upper()}"
-            
-            mcp_server.tool()(tool_func)
-
-    mcp_tools = []
-
+    langchain_tools = []
     async with MCPAdapter(mcp_server) as adapter:
-        mcp_tools = await adapter.list_tools()
+        langchain_tools = await adapter.list_tools()
 
-    tools.extend(mcp_tools)
+    tools.extend(langchain_tools)
 
 # Συνάρτηση για την απόκτηση εργαλείων από Website με WebMCP standart.
 async def add_tools_from_website(data: dict):
