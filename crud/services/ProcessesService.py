@@ -14,11 +14,6 @@ class ProcessesService:
     def get_by_id(self, id: str) -> dict:
         response = requests.get(f"{self.DOMAIN}/processes/{id}")
         return None if response.status_code == 404 else response.json()
-
-    # Επιστρέφει ένα Process με βάση το ID του AI Agent.
-    def get_by_agent_id(self, id: str) -> list[dict]:
-        response = requests.get(f"{self.DOMAIN}/processes/agent/{id}").json()
-        return response
     
     # Προσθέτει ένα νέο Process.
     def add(self, data: dict) -> str:

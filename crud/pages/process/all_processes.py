@@ -1,5 +1,5 @@
 # Η σελίδα εμφανίζει τη λίστα των υπαρχόντων Processes ενός AI Agent.
-from crud.services.ProcessesService import ProcessesService
+from crud.services.AgentsService import AgentsService
 
 import streamlit as st
 
@@ -8,13 +8,13 @@ if not agent_id:
     st.error("Λείπει το ID του AI Agent")
     st.stop()
 
-service = ProcessesService()
+service = AgentsService()
 
 global container
 container = st.container()
 
 with container:
-    processes = service.get_by_agent_id(agent_id)
+    processes = service.get_processes_by_agent_id(agent_id)
     if isinstance(processes, dict) and "error" in processes:
         container.error(f"Σφάλμα: {processes['error']}")
         st.stop()

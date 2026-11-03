@@ -31,13 +31,6 @@ def get_process_by_id(id):
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# GET /processes/agent/<id>.
-def get_processes_by_agent_id(id):
-    try:
-        return repo.get_by_agent_id(id), 200
-    except Exception as error:
-        return {'error': f"Internal server error: {error}"}, 500
-
 # POST /processes.
 def add_process():
     try:

@@ -14,6 +14,11 @@ class AgentsService:
     def get_by_agent_id(self, id: str) -> dict:
         response = requests.get(f"{self.DOMAIN}/agents/{id}")
         return response.json()
+
+    # Επιστρέφει τα Processes που ανήκουν σε έναν AI Agent με βάση το ID του.
+    def get_processes_by_agent_id(self, id: str) -> list[dict]:
+        response = requests.get(f"{self.DOMAIN}/agents/{id}/processes").json()
+        return response
     
     # Προσθέτει έναν νέο AI Agent.
     def add(self, data: dict) -> str:
