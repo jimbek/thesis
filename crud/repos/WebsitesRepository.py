@@ -70,8 +70,13 @@ class WebsitesRepository(BaseRepository):
     def delete(self, id: str):
         if not self.exists('id', id):
             return {'error': 'Δεν υπάρχει Website με αυτό το ID.'}
+
+        mcp_servers = self.sql_get_all(f'SELECT id FROM MCPServers WHERE website_id = \'{id}\'')
+        if mcp_servers and len(mcp_servers) > 0:
+            return {'error': 'Δεν μπορείτε να διαγράψετε το Website καθώς χρησιμοποιείται.'}
         
         self.sql_command(f'DELETE FROM Websites WHERE id = \'{id}\'')
+        return {}
 
     def exists(self, property_name: str, value: str):
         return self.sql_get_one(f'SELECT id FROM Websites WHERE {property_name} = \'{value}\'') is not None

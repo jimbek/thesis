@@ -27,5 +27,5 @@ class RestAPIsService:
 
     # Διαγράφει ένα REST API.
     def delete(self, id: str) -> str:
-        response = requests.delete(f"{self.DOMAIN}/restapis/{id}")
+        response = requests.delete(f"{self.DOMAIN}/restapis/{id}").json()
         return response

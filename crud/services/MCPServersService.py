@@ -27,5 +27,5 @@ class MCPServersService:
 
     # Διαγράφει έναν MCP Server.
     def delete(self, id: str) -> str:
-        response = requests.delete(f"{self.DOMAIN}/mcpservers/{id}")
+        response = requests.delete(f"{self.DOMAIN}/mcpservers/{id}").json()
         return response

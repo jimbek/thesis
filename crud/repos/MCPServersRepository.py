@@ -80,8 +80,13 @@ class MCPServersRepository(BaseRepository):
     def delete(self, id: str):
         if not self.exists('id', id):
             return {'error': 'Δεν υπάρχει MCP Server με αυτό το ID.'}
+
+        ai_agents = self.sql_get_all(f'SELECT 1 FROM AgentMCPServers WHERE mcp_server_id = \'{id}\'')
+        if ai_agents and len(ai_agents) > 0:
+            return {'error': 'Δεν μπορείτε να διαγράψετε τον MCP Server καθώς χρησιμοποιείται.'}
         
         self.sql_command(f'DELETE FROM MCPServers WHERE id = \'{id}\'')
+        return {}
 
     def exists(self, property_name: str, value: str):
         return self.sql_get_one(f'SELECT id FROM MCPServers WHERE {property_name} = \'{value}\'') is not None

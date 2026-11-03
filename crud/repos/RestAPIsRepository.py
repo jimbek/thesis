@@ -72,7 +72,12 @@ class RestAPIsRepository(BaseRepository):
         if not self.exists('id', id):
             return {'error': 'Δεν υπάρχει RestAPI με αυτό το ID.'}
         
+        mcp_servers = self.sql_get_all(f'SELECT id FROM MCPServers WHERE restapi_id = \'{id}\'')
+        if mcp_servers and len(mcp_servers) > 0:
+            return {'error': 'Δεν μπορείτε να διαγράψετε το RestAPI καθώς χρησιμοποιείται.'}
+        
         self.sql_command(f'DELETE FROM RestAPIs WHERE id = \'{id}\'')
+        return {}
 
     def exists(self, property_name: str, value: str):
         return self.sql_get_one(f'SELECT id FROM RestAPIs WHERE {property_name} = \'{value}\'') is not None

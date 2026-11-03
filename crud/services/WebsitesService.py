@@ -27,5 +27,5 @@ class WebsitesService:
 
     # Διαγράφει ένα Website.
     def delete(self, id: str) -> str:
-        response = requests.delete(f"{self.DOMAIN}/websites/{id}")
+        response = requests.delete(f"{self.DOMAIN}/websites/{id}").json()
         return response
