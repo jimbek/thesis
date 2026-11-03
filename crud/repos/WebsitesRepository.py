@@ -21,7 +21,7 @@ class WebsitesRepository(BaseRepository):
     def seed_db(self):
         super().seed_db(f'''
             INSERT OR IGNORE INTO Websites (id, name, description, domain) VALUES ("71625d2a-a4a3-41a9-9412-f5706341e010", "WebMCP Website", "Παρέχει μια λίστα ιστοσελίδων που υποστηρίζουν το WebMCP standard.", "https://webmcp.com");
-            INSERT OR IGNORE INTO Websites (id, name, description, domain) VALUES ("71625d2a-a4a3-41a9-9412-f5706341e011", "Jobbbler", "Περιέχει ανοιχτές θέσεις εργασίας στον τομέα της τεχνολογίας.", "https://jobbbler.com/");
+            INSERT OR IGNORE INTO Websites (id, name, description, domain) VALUES ("71625d2a-a4a3-41a9-9412-f5706341e011", "Emorahealth", "Παρέχει τη δυνατότητα εύρεσης ειδικών στον τομέα της ψυχικής υγείας.", "https://www.emorahealth.com");
         ''')
 
     def get_all(self):

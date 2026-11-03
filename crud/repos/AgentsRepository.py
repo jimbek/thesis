@@ -30,7 +30,7 @@ class AgentsRepository(BaseRepository):
         super().seed_db('''
             INSERT OR IGNORE INTO Agents (id, name, system_prompt) VALUES ("41265a2a-f9a3-81d9-5412-b5715342e070", "EDYP AI Agent", "Provide public employee related information. Use only available tools. Return results in HTML format if necessary.");
             INSERT OR IGNORE INTO Agents (id, name, system_prompt) VALUES ("41265a2a-f9a3-81d9-5412-b5715342e071", "Webmcp AI Agent", "Provide information based on the WebMCP directory. Use only available tools. Return results in HTML format if necessary.");
-            INSERT OR IGNORE INTO Agents (id, name, system_prompt) VALUES ("41265a2a-f9a3-81d9-5412-b5715342e072", "Jobbbler AI Agent", "Provide open technology roles related information. Use only available tools. Return results in HTML format if necessary.");
+            INSERT OR IGNORE INTO Agents (id, name, system_prompt) VALUES ("41265a2a-f9a3-81d9-5412-b5715342e072", "Emorahealth AI Agent", "Provide mental health specialist related information. Use only available tools. Return results in HTML format if necessary.");
         ''')
 
         super().seed_db('''

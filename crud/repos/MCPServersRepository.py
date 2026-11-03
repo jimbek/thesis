@@ -24,7 +24,7 @@ class MCPServersRepository(BaseRepository):
         super().seed_db('''
             INSERT OR IGNORE INTO MCPServers (id, name, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e070", "EDYP MCP Server", "31625a2a-a9a3-41a9-9412-c5705341e070", NULL);
             INSERT OR IGNORE INTO MCPServers (id, name, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e071", "WebMCP MCP Server", NULL, "71625d2a-a4a3-41a9-9412-f5706341e010");
-            INSERT OR IGNORE INTO MCPServers (id, name, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e072", "Jobbbler MCP Server", NULL, "71625d2a-a4a3-41a9-9412-f5706341e011");
+            INSERT OR IGNORE INTO MCPServers (id, name, restapi_id, website_id) VALUES ("41275a2a-a9a3-81d9-9412-b5715342e072", "Emorahealth MCP Server", NULL, "71625d2a-a4a3-41a9-9412-f5706341e011");
         ''')
     
     def get_all(self):
