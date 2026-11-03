@@ -1,4 +1,4 @@
-# This page allows the user to add a new LLM.
+# Η σελίδα επιτρέπει την εγκατάσταση νέου LLM.
 from crud.services.LLMsService import LLMsService
 
 import streamlit as st
@@ -7,7 +7,6 @@ service = LLMsService()
 
 st.header("Εγκατάσταση LLM")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

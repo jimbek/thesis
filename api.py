@@ -1,4 +1,4 @@
-# Runs the CRUD operations for the application.
+# Εδώ ορίζεται και εκτελείται το API.
 from crud.repos.RestAPIsRepository import RestAPIsRepository
 from crud.repos.WebsitesRepository import WebsitesRepository
 from crud.repos.MCPServersRepository import MCPServersRepository
@@ -19,7 +19,7 @@ mcpservers_repo = MCPServersRepository()
 agents_repo = AgentsRepository()
 processes_repo = ProcessesRepository()
 
-# Seed the db
+# Δημιουργεί και γεμίζει τη βάση δεδομένων με αρχικά δεδομένα.
 if restapis_repo.table_exists('RestAPIs') is False:
     restapis_repo.apply_migrations()
     restapis_repo.seed_db()

@@ -1,4 +1,4 @@
-# This page allows the user to edit an existing Website.
+# Η σελίδα επιτρέπει την επεξεργασία ενός υπάρχοντος Website.
 from crud.services.WebsitesService import WebsitesService
 
 import streamlit as st
@@ -12,7 +12,6 @@ service = WebsitesService()
 
 st.header("Επεξεργασία Website")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

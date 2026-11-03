@@ -3,7 +3,7 @@ from crud.models.Process import Process
 
 import uuid
 
-# Describes the repository for managing Process-related database operations.
+# Το repository για τη διαχείριση των λειτουργιών βάσης δεδομένων που σχετίζονται με τα Processes.
 class ProcessesRepository(BaseRepository):
     def __init__(self):
         super().__init__()
@@ -20,7 +20,6 @@ class ProcessesRepository(BaseRepository):
             )
         ''')
     
-    # Retrieves all 'Process' entries.
     def get_all(self):
         data = self.sql_get_all(f'''
             SELECT Processes.id, Processes.pid, Processes.llm, Processes.agent_id, Processes.port, agent.name AS agent_name
@@ -30,7 +29,6 @@ class ProcessesRepository(BaseRepository):
         
         return [Process.to_dict(row) for row in data]
 
-    # Retrieves a 'Process' entry by its ID.
     def get_by_id(self, id: str):
         row = self.sql_get_one(f'''
             SELECT Processes.id, Processes.pid, Processes.llm, Processes.agent_id, Processes.port, agent.name AS agent_name
@@ -40,7 +38,6 @@ class ProcessesRepository(BaseRepository):
         ''')
         return Process.to_dict(row) if row else None
 
-    # Retrieves 'Process' entries by their AI Agent ID.
     def get_by_agent_id(self, id: str):
         data = self.sql_get_all(f'''
             SELECT Processes.id, Processes.pid, Processes.llm, Processes.agent_id, Processes.port, agent.name AS agent_name
@@ -50,7 +47,6 @@ class ProcessesRepository(BaseRepository):
         ''')
         return [Process.to_dict(row) for row in data]
 
-    # Adds a new 'Process' entry to the database and returns the ID of the newly created entry.
     def add(self, data: dict):
         data['id'] = str(uuid.uuid4())
 
@@ -65,7 +61,6 @@ class ProcessesRepository(BaseRepository):
 
         return data['id']
 
-    # Edits an existing 'Process' entry by its ID.
     def edit(self, id: str, data: dict):
         if not id:
             return {'error': 'Λείπει το ID της διαδικασίας.'}
@@ -86,17 +81,15 @@ class ProcessesRepository(BaseRepository):
         self.sql_command(f'UPDATE Processes SET {set_clause} WHERE id = \'{id}\'')
 
         return id
-    # Deletes a 'Process' entry by its ID.
+
     def delete(self, id: str):
         if not self.exists('id', id):
             return {'error': 'Δεν υπάρχει διαδικασία με αυτό το ID.'}
         
         self.sql_command(f'DELETE FROM Processes WHERE id = \'{id}\'')
 
-    # Clears all 'Process' entries from the database.
     def clear_all(self):
         self.sql_command('DELETE FROM Processes')
 
-    # Checks if a 'Process' entry exists in the database by one of its properties.
     def exists(self, property_name: str, value: str):
         return self.sql_get_one(f'SELECT id FROM Processes WHERE {property_name} = \'{value}\'') is not None

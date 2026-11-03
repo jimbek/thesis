@@ -1,19 +1,18 @@
-# Defines the routes for the 'RestAPIs' table.
+# Εδώ δηλώνονται τα routes για τον πίνακα 'RestAPIs'.
 from crud.repos.RestAPIsRepository import RestAPIsRepository
 
 from flask import request
 
-# Initialize the RestAPIsRepository.
 repo = RestAPIsRepository()
 
-# GET /restapis - Get all REST APIs.
+# GET /restapis.
 def get_restapis():
     try:
         return repo.get_all(), 200
     except Exception as error:
        return {'error': f"Internal server error: {error}"}, 500
 
-# GET /restapis/<id> - Get a REST API by its ID.
+# GET /restapis/<id>.
 def get_restapi_by_id(id):
     try:
         result = repo.get_by_id(id)
@@ -25,7 +24,7 @@ def get_restapi_by_id(id):
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# POST /restapis - Create a REST API.
+# POST /restapis.
 def add_restapi():
     try:
         data = request.get_json()
@@ -38,7 +37,7 @@ def add_restapi():
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# PUT /restapis/<id> - Update a REST API by its ID.
+# PUT /restapis/<id>.
 def edit_restapi(id):
     try:
         data = request.get_json()
@@ -51,7 +50,7 @@ def edit_restapi(id):
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# DELETE /restapis/<id> - Delete a REST API by its ID.
+# DELETE /restapis/<id>.
 def delete_restapi(id):
     try:
         result = repo.delete(id)

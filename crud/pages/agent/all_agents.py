@@ -1,11 +1,10 @@
-# This page displays the list of existing AI Agents.
+# Η σελίδα εμφανίζει τους διαθέσιμους AI Agents.
 from crud.services.AgentsService import AgentsService
 
 import streamlit as st
 
 service = AgentsService()
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

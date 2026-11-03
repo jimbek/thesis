@@ -1,4 +1,4 @@
-# Describes the model for an MCPServer entity.
+# Περιγράφει το μοντέλο MCPServer.
 class MCPServer:
     def __init__(self, id: str, name: str, restapi_id: str = None, website_id: str = None):
         self.id = id
@@ -6,7 +6,6 @@ class MCPServer:
         self.restapi_id = restapi_id
         self.website_id = website_id
 
-    # Returns a dictionary representation of the MCPServer instance.
     @staticmethod
     def to_dict(row: tuple = None):
         return {
@@ -18,7 +17,6 @@ class MCPServer:
             "source": row[4] if row[2] is not None and row[2] != "" and row[2] != "None" else row[5]
         }
 
-    # Returns a dictionary that describes an invalid MCPServer instance.
     @staticmethod
     def to_invalid(data: dict = None):
         message = ""

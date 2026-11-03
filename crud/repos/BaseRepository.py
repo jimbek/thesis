@@ -1,33 +1,32 @@
-# Implements the base repository class that all other repositories will inherit from.
-# This class provides methods for applying migrations, seeding the database, and executing SQL commands.
 import sqlite3
 
+# Το βασικό repository που κληρονομούν όλα τα άλλα repositories.
 class BaseRepository:
     def __init__(self):
-        # The filename of the database.
+        # Το όνομα του αρχείου της βάσης δεδομένων.
         self.db = 'database.db'
     
-    # Checks if the given table exists in the database.
+    # Ελέγχει αν υπάρχει ο πίνακας με το δοσμένο όνομα στη βάση δεδομένων.
     def table_exists(self, table_name: str):
         command = f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}'"
         data = self.sql_get_one(command)
 
         return data is not None
 
-    # Executes the given SQL command to the database.
-    # This is used to apply migrations to the database in order to automatically create the schema.
+    # Εκτελεί το SQL command στη βάση δεδομένων.
+    # Χρησιμοποιείται για να δημιουργηθεί αυτόματα το σχήμα της βάσης δεδομένων.
     def apply_migrations(self, command: str):
         self.sql_command(command)
 
-    # Executes the given SQL command to the database.
-    # This is used to seed the database with initial data.
+    # Εκτελεί το SQL command στη βάση δεδομένων.
+    # Χρησιμοποιείται για την αρχικοποίηση της βάσης δεδομένων με αρχικά δεδομένα.
     def seed_db(self, command: str):
         commands = command.split(';')
 
         for command in commands:
             self.sql_command(command)
 
-    # Opens a connection to the database, executes the given SQL command, and then closes the connection.
+    # Ανοίγει μια σύνδεση με τη βάση δεδομένων, εκτελεί το SQL command και στη συνέχεια κλείνει τη σύνδεση.
     def sql_command(self, command: str):
         connection = self.__get_connection__()
         cursor = connection.cursor()
@@ -35,7 +34,7 @@ class BaseRepository:
         connection.commit()
         connection.close()
     
-    # Opens a connection to the database, executes the given SQL command, retrieves one result, and then closes the connection.
+    # Ανοίγει μια σύνδεση με τη βάση δεδομένων, εκτελεί το SQL command, κλείνει τη σύνδεση κι επιστρέφει ένα αποτέλεσμα.
     def sql_get_one(self, command: str):
         connection = self.__get_connection__()
         cursor = connection.cursor()
@@ -45,7 +44,7 @@ class BaseRepository:
 
         return data
     
-    # Opens a connection to the database, executes the given SQL command, retrieves all results, and then closes the connection.
+    # Ανοίγει μια σύνδεση με τη βάση δεδομένων, εκτελεί το SQL command, κλείνει τη σύνδεση κι επιστρέφει όλα τα αποτελέσματα.
     def sql_get_all(self, command: str):
         connection = self.__get_connection__()
         cursor = connection.cursor()
@@ -55,6 +54,6 @@ class BaseRepository:
 
         return data
 
-    # Returns the filename of the database.
+    # Δημιουργεί τη σύνδεση με τη βάση δεδομένων.
     def __get_connection__(self):
         return sqlite3.connect(self.db)

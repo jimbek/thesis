@@ -1,4 +1,4 @@
-# This page allows the user to delete an MCP Server entry by its ID.
+# Η σελίδα επιτρέπει τη διαγραφή ενός MCP Server με βάση το ID του.
 from crud.services.MCPServersService import MCPServersService
 
 import streamlit as st
@@ -12,7 +12,6 @@ service = MCPServersService()
 
 st.header("Διαγραφή MCP Server")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

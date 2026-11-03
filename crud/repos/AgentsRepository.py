@@ -3,7 +3,7 @@ from crud.models.Agent import Agent
 
 import uuid
 
-# Describes the repository for managing Agent-related database operations.
+# Το repository για τη διαχείριση των λειτουργιών βάσης δεδομένων που σχετίζονται με τους AI Agents.
 class AgentsRepository(BaseRepository):
     def __init__(self):
         super().__init__()
@@ -37,7 +37,6 @@ class AgentsRepository(BaseRepository):
             INSERT OR IGNORE INTO AgentMCPServers (agent_id, mcp_server_id) VALUES ("41265a2a-f9a3-81d9-5412-b5715342e071", "41275a2a-a9a3-81d9-9412-b5715342e072");
         ''')
     
-    # Retrieves all 'Agent' entries.
     def get_all(self):
         data = self.sql_get_all(f'''
             SELECT Agents.id, Agents.name, Agents.system_prompt
@@ -61,7 +60,6 @@ class AgentsRepository(BaseRepository):
 
         return [Agent.to_dict(row, mcp_server_ids_dict.get(row[0], [])) for row in data]
 
-    # Retrieves an 'AI Agent' entry by its ID.
     def get_by_id(self, id: str):
         row = self.sql_get_one(f'''
             SELECT Agents.id, Agents.name, Agents.system_prompt
@@ -77,7 +75,6 @@ class AgentsRepository(BaseRepository):
 
         return Agent.to_dict(row, [row[1] for row in mcp_server_ids]) if row else None
 
-    # Adds a new 'AI Agent' entry to the database and returns the ID of the newly created entry.
     def add(self, data: dict):
         data['id'] = str(uuid.uuid4())
 
@@ -92,7 +89,6 @@ class AgentsRepository(BaseRepository):
 
         return data['id']
 
-    # Edits an existing 'AI Agent' entry by its ID.
     def edit(self, id: str, data: dict):
         if not id:
             return {'error': 'Λείπει το ID του AI Agent.'}
@@ -115,7 +111,6 @@ class AgentsRepository(BaseRepository):
 
         return id
 
-    # Deletes an 'AI Agent' entry by its ID.
     def delete(self, id: str):
         if not self.exists(id):
             return {'error': 'Δεν υπάρχει AI Agent με αυτό το ID.'}
@@ -123,6 +118,5 @@ class AgentsRepository(BaseRepository):
         self.sql_command(f'DELETE FROM AgentMCPServers WHERE agent_id = \'{id}\'')
         self.sql_command(f'DELETE FROM Agents WHERE id = \'{id}\'')
 
-    # Checks if an 'AI Agent' entry exists in the database by its ID.
     def exists(self, id: str):
         return self.sql_get_one(f'SELECT id FROM Agents WHERE id = \'{id}\'') is not None

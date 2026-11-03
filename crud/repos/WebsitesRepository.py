@@ -3,7 +3,7 @@ from crud.models.Website import Website
 
 import uuid
 
-# Describes the repository for managing Website-related database operations.
+# Το repository για τη διαχείριση των λειτουργιών βάσης δεδομένων που σχετίζονται με τα Websites.
 class WebsitesRepository(BaseRepository):
     def __init__(self):
         super().__init__()
@@ -24,17 +24,14 @@ class WebsitesRepository(BaseRepository):
             INSERT OR IGNORE INTO Websites (id, name, description, domain) VALUES ("71625d2a-a4a3-41a9-9412-f5706341e011", "Redbus", "Bus ticket booking platform of India.", "https://www.redbus.in");
         ''')
 
-    # Retrieves all 'Website' entries.
     def get_all(self):
         data = self.sql_get_all(f'SELECT * FROM Websites')
         return [Website.to_dict(row) for row in data]
 
-    # Retrieves a 'Website' entry by its ID.
     def get_by_id(self, id: str):
         row = self.sql_get_one(f'SELECT * FROM Websites WHERE id = \'{id}\'')
         return Website.to_dict(row) if row else None
 
-    # Adds a new 'Website' entry to the database and returns the ID of the newly created entry.
     def add(self, data: dict):
         data['id'] = str(uuid.uuid4())
 
@@ -49,7 +46,6 @@ class WebsitesRepository(BaseRepository):
 
         return data['id']
 
-    # Edits an existing 'Website' entry by its ID.
     def edit(self, id: str, data: dict):
         if not id:
             return {'error': 'Λείπει το ID του Website.'}
@@ -71,13 +67,11 @@ class WebsitesRepository(BaseRepository):
 
         return id
 
-    # Deletes a 'Website' entry by its ID.
     def delete(self, id: str):
         if not self.exists('id', id):
             return {'error': 'Δεν υπάρχει Website με αυτό το ID.'}
         
         self.sql_command(f'DELETE FROM Websites WHERE id = \'{id}\'')
 
-    # Checks if a 'Website' entry exists in the database by one of its properties.
     def exists(self, property_name: str, value: str):
         return self.sql_get_one(f'SELECT id FROM Websites WHERE {property_name} = \'{value}\'') is not None

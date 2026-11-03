@@ -1,4 +1,4 @@
-# Describes the model for a Website entity.
+# Περιγράφει το μοντέλο Website.
 class Website:
     def __init__(self, id: str, name: str, description: str, domain: str):
         self.id = id
@@ -6,7 +6,6 @@ class Website:
         self.description = description
         self.domain = domain
 
-    # Returns a dictionary representation of the Website instance.
     @staticmethod
     def to_dict(row: tuple = None):
         return {
@@ -16,7 +15,6 @@ class Website:
             "domain": row[3]
         }
 
-    # Returns a dictionary that describes an invalid Website instance.
     @staticmethod
     def to_invalid(data: dict = None):
         message = ""

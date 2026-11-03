@@ -1,19 +1,18 @@
-# Defines the routes for the 'MCPServers' table.
+# Εδώ δηλώνονται τα routes για τον πίνακα 'MCPServers'.
 from crud.repos.MCPServersRepository import MCPServersRepository
 
 from flask import request
 
-# Initialize the MCPServersRepository.
 repo = MCPServersRepository()
 
-# GET /mcpservers - Get all MCP servers.
+# GET /mcpservers.
 def get_mcpservers():
     try:
         return repo.get_all(), 200
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# GET /mcpservers/<id> - Get an MCP server by its ID.
+# GET /mcpservers/<id>.
 def get_mcpserver_by_id(id):
     try:
         result = repo.get_by_id(id)
@@ -25,7 +24,7 @@ def get_mcpserver_by_id(id):
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# POST /mcpservers - Create an MCP server.
+# POST /mcpservers.
 def add_mcpserver():
     try:
         data = request.get_json()
@@ -38,7 +37,7 @@ def add_mcpserver():
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# PUT /mcpservers/<id> - Update an MCP server by its ID.
+# PUT /mcpservers/<id>.
 def edit_mcpserver(id):
     try:
         data = request.get_json()
@@ -51,7 +50,7 @@ def edit_mcpserver(id):
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# DELETE /mcpservers/<id> - Delete an MCP server by its ID.
+# DELETE /mcpservers/<id>.
 def delete_mcpserver(id):
     try:
         result = repo.delete(id)

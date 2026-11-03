@@ -1,4 +1,4 @@
-# Describes the model for an AI Agent entity.
+# Περιγράφει το μοντέλο AI Agent.
 class Agent:
     def __init__(self, id: str, name: str, system_prompt: str, mcp_server_ids: list[str]):
         self.id = id
@@ -15,7 +15,6 @@ class Agent:
             'mcp_server_ids': mcp_server_ids
         }
 
-    # Returns a dictionary that describes an invalid Agent instance.
     @staticmethod
     def to_invalid(data: dict = None):
         message = ""

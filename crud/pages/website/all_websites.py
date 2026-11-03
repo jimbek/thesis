@@ -1,11 +1,10 @@
-# This page displays the list of existing Websites.
+# Η σελίδα εμφανίζει τη λίστα των υπαρχόντων Websites.
 from crud.services.WebsitesService import WebsitesService
 
 import streamlit as st
 
 service = WebsitesService()
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

@@ -1,11 +1,10 @@
-# This page displays the list of existing MCP Servers.
+# Η σελίδα εμφανίζει τους διαθέσιμους MCP Servers.
 from crud.services.MCPServersService import MCPServersService
 
 import streamlit as st
 
 service = MCPServersService()
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

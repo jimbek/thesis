@@ -1,3 +1,4 @@
+# Εδώ ορίζεται ο AI Agent κι εκτελείται ως subprocess σε συγκεκριμένο port.
 import asyncio
 import json
 import httpx
@@ -37,39 +38,47 @@ async def add_tools_from_api(data: dict):
 
     openapi_spec_json = httpx.get(domain + openapi_spec).json()
 
+    # Δημιουργία FastMCP server από το OpenAPI spec.
     mcp_server = FastMCP.from_openapi(
         name=mcp_server_name,
         client=http_client,
         openapi_spec=openapi_spec_json
     )
 
+    # Με τη βοήθεια του Adapter μετατρέπουμε αυτόματα τα εργαλεία του MCP Server σε εργαλεία συμβατά με το LangChain.
     langchain_tools = []
     async with MCPAdapter(mcp_server) as adapter:
         langchain_tools = await adapter.list_tools()
 
     tools.extend(langchain_tools)
 
-# Συνάρτηση για την απόκτηση εργαλείων από Website με WebMCP standart.
+# Συνάρτηση για την απόκτηση εργαλείων από Website με WebMCP standard.
 async def add_tools_from_website(data: dict):
+    # Συνάρτηση για τη δημιουργία δυναμικού εργαλείου από Website.
     def create_tool(domain: str, tool_name: str):
         async def dynamic_tool(**kwargs) -> Any:
             async with async_playwright() as p:
+                # Ανοίγουμε τον browser.
                 browser = await p.chromium.launch(
-                    headless=True,  # <--- ΑΛΛΑΓΗ: True για Docker
+                    headless=True,
                     args=[
                         "--enable-features=WebMCP",
-                        "--no-sandbox",                     # <--- ΠΡΟΣΘΗΚΗ
-                        "--disable-setuid-sandbox",         # <--- ΠΡΟΣΘΗΚΗ
-                        "--disable-dev-shm-usage"           # <--- ΠΡΟΣΘΗΚΗ
+                        "--no-sandbox",
+                        "--disable-setuid-sandbox",
+                        "--disable-dev-shm-usage"
                     ]
                 )
 
+                # Πλοηγούμαστε στην αρχική σελίδα του website.
                 page = await browser.new_page()
                 await page.goto(domain)
 
+                # Καλούμε το WebMCP εργαλείο.
                 result = await page.webmcp.call_tool(name=tool_name, input=kwargs)
 
+                # Κλείνουμε τον browser.
                 await browser.close()
+
                 return result
         
         dynamic_tool.__name__ = tool_name
@@ -80,19 +89,22 @@ async def add_tools_from_website(data: dict):
     pure_langchain_tools = []
 
     async with async_playwright() as p:
+        # Ανοίγουμε τον browser.
         browser = await p.chromium.launch(
-            headless=True,  # <--- ΑΛΛΑΓΗ: True για Docker
+            headless=True,
             args=[
                 "--enable-features=WebMCP",
-                "--no-sandbox",                     # <--- ΠΡΟΣΘΗΚΗ
-                "--disable-setuid-sandbox",         # <--- ΠΡΟΣΘΗΚΗ
-                "--disable-dev-shm-usage"           # <--- ΠΡΟΣΘΗΚΗ
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage"
             ]
         )
-        
+
+        # Πλοηγούμαστε στην αρχική σελίδα του website.
         page = await browser.new_page()
         await page.goto(domain) 
 
+        # Διαβάζουμε τα διαθέσιμα WebMCP εργαλεία.
         web_tools = await page.webmcp.tools()
         
         if not web_tools:
@@ -100,12 +112,15 @@ async def add_tools_from_website(data: dict):
             return
 
         for tool in web_tools:
+            # Τα απαραίτητα properties του WebMCP εργαλείου που χρειαζόμαστε.
             tool_name = tool['name']
             tool_desc = tool['description']
             input_schema = tool.get("inputSchema", {"type": "object", "properties": {}})
 
+            # Δημιουργούμε τη δυναμική συνάρτηση για το εργαλείο.
             func = create_tool(domain, tool_name)
-            
+
+            # Δημιουργούμε το LangChain εργαλείο από τη δυναμική συνάρτηση.
             lc_tool = StructuredTool.from_function(
                 coroutine=func,
                 name=tool_name,
@@ -115,21 +130,22 @@ async def add_tools_from_website(data: dict):
             
             pure_langchain_tools.append(lc_tool)
 
+        # Κλείνουμε τον browser.
         await browser.close()
 
         tools.extend(pure_langchain_tools)
 
-# Κατά την εκκίνηση του agent ελέγχουμε αν μας δόθηκε το payload
+# Κατά την εκκίνηση του agent ελέγχουμε αν μας δόθηκε το payload.
 if len(sys.argv) < 2:
     print("Σφάλμα: Δεν δόθηκε payload στον Agent.")
     sys.exit(1)
 
 try:
-    # Το sys.argv[0] είναι το όνομα του αρχείου (agent.py)
-    # Το sys.argv[1] είναι το JSON string που στείλαμε
+    # Το sys.argv[0] είναι το όνομα του αρχείου (agent.py).
+    # Το sys.argv[1] είναι το JSON string που στείλαμε.
     raw_payload = sys.argv[1]
     
-    # Μετατροπή του JSON string ξανά σε Python dict
+    # Μετατροπή του JSON string σε dictionary.
     payload = json.loads(raw_payload)
     
 except json.JSONDecodeError:
@@ -156,7 +172,7 @@ for server_id in mcp_server_ids:
 for mcp_server in mcp_servers:
     mcp_server_name = mcp_server.get("name")
 
-    if mcp_server.get("type") == "Rest API":
+    if mcp_server.get("type") == "Rest API": # 1η περίπτωση: Rest API MCP server.
         rest_api = rest_apis_repo.get_by_id(mcp_server.get("restapi_id"))
         if not rest_api:
             continue
@@ -171,7 +187,7 @@ for mcp_server in mcp_servers:
                 "mcp_server_name": mcp_server_name
             }
             asyncio.run(add_tools_from_api(data))
-    elif mcp_server.get("type") == "Website":
+    elif mcp_server.get("type") == "Website": # 2η περίπτωση: Website MCP server.
         website = websites_repo.get_by_id(mcp_server.get("website_id"))
         if not website:
             continue
@@ -184,7 +200,7 @@ for mcp_server in mcp_servers:
             }
             asyncio.run(add_tools_from_website(data))
 
-# Αφού έχουμε προσθέσει όλα τα εργαλεία από τα Rest APIs, μπορούμε να συνεχίσουμε με την εκκίνηση του agent.
+# Δημιουργούμε τον AI Agent.
 agent = create_react_agent(model=model, prompt=payload.get("system_prompt"), tools=tools)
 
 # Κλήση του AI Agent με το μήνυμα του χρήστη.
@@ -195,6 +211,7 @@ async def call(user_message: str):
 # Ο Flask server για την επικοινωνία με τον χρήστη.
 app = Flask(__name__)
 
+# Η κλήση του Flask endpoint για την επικοινωνία με τον AI Agent.
 @app.route("/chat", methods=["POST"])
 def run_agent():
     try:
@@ -204,14 +221,14 @@ def run_agent():
         
         user_message = data['message']
 
-        # Δημιουργία/Ανάκτηση απομονωμένου loop για το συγκεκριμένο thread του request
+        # Για το συγκεκριμένο thread του request δημιουργούμε ή ανακτούμε το event loop.
         try:
             loop = asyncio.get_event_loop()
         except RuntimeError:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             
-        # Εκτέλεση του async Agent
+        # Καλούμε τον AI Agent με το μήνυμα του χρήστη.
         output_text = loop.run_until_complete(call(user_message))
 
         return jsonify({

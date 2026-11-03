@@ -1,4 +1,4 @@
-# This page allows the user to delete a Website entry by its ID.
+# Η σελίδα επιτρέπει τη διαγραφή ενός Website με βάση το ID του.
 from crud.services.WebsitesService import WebsitesService
 
 import streamlit as st
@@ -12,7 +12,6 @@ service = WebsitesService()
 
 st.header("Διαγραφή Website")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

@@ -1,4 +1,4 @@
-# This page allows the user to delete an LLM.
+# Η σελίδα επιτρέπει την απεγκατάσταση ενός LLM.
 from crud.services.LLMsService import LLMsService
 
 import streamlit as st
@@ -12,7 +12,6 @@ service = LLMsService()
 
 st.header("Διαγραφή LLM")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

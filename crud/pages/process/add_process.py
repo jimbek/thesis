@@ -1,4 +1,4 @@
-# This page allows the user to add a new Process.
+# Η σελίδα επιτρέπει την προσθήκη νέου Process.
 from crud.services.ProcessesService import ProcessesService
 from crud.services.AgentsService import AgentsService
 from crud.services.LLMsService import LLMsService
@@ -16,7 +16,6 @@ llms_service = LLMsService()
 
 st.header("Προσθήκη Process")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 
@@ -26,7 +25,7 @@ with container:
         container.error(f"Σφάλμα: {agent['error']}")
         st.stop()
     
-    port = container.number_input("Port", min_value=8000, max_value=8010, value=8001)
+    port = container.number_input("Port", min_value=8000)
 
     all_llms = llms_service.get_all()
     llm = container.selectbox(
@@ -36,10 +35,6 @@ with container:
     )
 
     if container.button("Save"):
-        if port not in range(8000, 8011):
-            st.toast("Ο port πρέπει να είναι μεταξύ 8000 και 8010.")
-            st.stop()
-
         if not llm:
             st.toast("Πρέπει να επιλέξετε ένα LLM.")
             st.stop()

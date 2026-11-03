@@ -1,11 +1,10 @@
-# This page displays the list of existing REST APIs.
+# Η σελίδα εμφανίζει τη λίστα των υπαρχόντων REST APIs.
 from crud.services.RestAPIsService import RestAPIsService
 
 import streamlit as st
 
 service = RestAPIsService()
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

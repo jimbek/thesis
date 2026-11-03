@@ -1,4 +1,4 @@
-# This page allows the user to edit an existing MCP Server.
+# Η σελίδα επιτρέπει την επεξεργασία ενός υπάρχοντος MCP Server.
 from crud.services.MCPServersService import MCPServersService
 from crud.services.RestAPIsService import RestAPIsService
 from crud.services.WebsitesService import WebsitesService
@@ -16,7 +16,6 @@ websites_service = WebsitesService()
 
 st.header("Επεξεργασία MCP Server")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

@@ -1,4 +1,4 @@
-# This page allows the user to edit an existing REST API.
+# Η σελίδα επιτρέπει την επεξεργασία ενός υπάρχοντος REST API.
 from crud.services.RestAPIsService import RestAPIsService
 
 import streamlit as st
@@ -12,7 +12,6 @@ service = RestAPIsService()
 
 st.header("Επεξεργασία REST API")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

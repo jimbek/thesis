@@ -1,4 +1,4 @@
-# Defines the routes for the 'Processes' table.
+# Εδώ δηλώνονται τα routes για τον πίνακα 'Processes'.
 from crud.repos.ProcessesRepository import ProcessesRepository
 
 import json
@@ -10,17 +10,16 @@ import time
 
 from flask import request
 
-# Initialize the ProcessesRepository.
 repo = ProcessesRepository()
 
-# GET /processes - Get all Processes.
+# GET /processes.
 def get_processes():
     try:
         return repo.get_all(), 200
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# GET /processes/<id> - Get a Process by its ID.
+# GET /processes/<id>.
 def get_process_by_id(id):
     try:
         result = repo.get_by_id(id)
@@ -32,14 +31,14 @@ def get_process_by_id(id):
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# GET /processes/agent/<id> - Get Processes by their AI Agent ID.
+# GET /processes/agent/<id>.
 def get_processes_by_agent_id(id):
     try:
         return repo.get_by_agent_id(id), 200
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# POST /processes - Create a Process.
+# POST /processes.
 def add_process():
     try:
         data = request.get_json()
@@ -52,7 +51,7 @@ def add_process():
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# PUT /processes/<id> - Update a Process by its ID.
+# PUT /processes/<id>.
 def edit_process(id):
     try:
         data = request.get_json()
@@ -65,7 +64,7 @@ def edit_process(id):
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# DELETE /processes/<id> - Delete a Process by its ID.
+# DELETE /processes/<id>.
 def delete_process(id: str):
     try:
         result = repo.delete(id)
@@ -77,7 +76,7 @@ def delete_process(id: str):
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# POST /processes/execute - Executes a Process.
+# POST /processes/execute.
 def run_process():
     try:
         data = request.get_json()
@@ -115,7 +114,7 @@ def run_process():
     except Exception as e:
         return { "error": f"Μήνυμα λάθους (stderr): {e.stderr if hasattr(e, 'stderr') else str(e)}" }, 500
 
-# POST /processes/terminate - Terminates a Process by its PID.
+# POST /processes/terminate.
 def terminate_process():
     try:
         data = request.get_json()
@@ -132,7 +131,7 @@ def terminate_process():
     except Exception as e:
         return { "error": str(e) }, 500
 
-# POST /processes/chat - Chat with the AI Agent of a Process.
+# POST /processes/chat.
 def chat():
     try:
         data = request.get_json()

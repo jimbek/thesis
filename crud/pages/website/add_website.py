@@ -1,4 +1,4 @@
-# This page allows the user to add a new Website.
+# Η σελίδα επιτρέπει την προσθήκη νέου Website.
 from crud.services.WebsitesService import WebsitesService
 
 import streamlit as st
@@ -7,7 +7,6 @@ service = WebsitesService()
 
 st.header("Δημιουργία Website")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

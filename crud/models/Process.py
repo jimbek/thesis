@@ -1,4 +1,4 @@
-# Describes the model for a Process entity.
+# Περιγράφει το μοντέλο Process.
 class Process:
     def __init__(self, id: str, pid: int, llm: str, agent_id: str, port: int):
         self.id = id
@@ -18,7 +18,6 @@ class Process:
             'agent_name': row[5]
         }
 
-    # Returns a dictionary that describes an invalid Process instance.
     @staticmethod
     def to_invalid(data: dict = None):
         message = ""

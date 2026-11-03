@@ -1,4 +1,4 @@
-# This page allows the user to add a new REST API.
+# Η σελίδα επιτρέπει την προσθήκη νέου REST API.
 from crud.services.RestAPIsService import RestAPIsService
 
 import streamlit as st
@@ -7,7 +7,6 @@ service = RestAPIsService()
 
 st.header("Δημιουργία REST API")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

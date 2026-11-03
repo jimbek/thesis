@@ -1,4 +1,4 @@
-# This page allows the user to edit an existing AI Agent.
+# Η σελίδα επιτρέπει την επεξεργασία ενός υπάρχοντος AI Agent.
 from crud.services.AgentsService import AgentsService
 from crud.services.MCPServersService import MCPServersService
 
@@ -14,7 +14,6 @@ mcp_servers_service = MCPServersService()
 
 st.header("Επεξεργασία AI Agent")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

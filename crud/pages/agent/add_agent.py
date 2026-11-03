@@ -1,4 +1,4 @@
-# This page allows the user to add a new AI Agent.
+# Η σελίδα προσθήκης νέου AI Agent.
 from crud.services.AgentsService import AgentsService
 from crud.services.MCPServersService import MCPServersService
 
@@ -9,7 +9,6 @@ mcp_servers_service = MCPServersService()
 
 st.header("Δημιουργία AI Agent")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

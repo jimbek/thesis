@@ -1,5 +1,4 @@
-# Defines pages and navigation for the admin interface.
-# Pages are defined in the pages/ directory and imported here.
+# Εδώ ορίζονται οι σελίδες και η πλοήγηση για το διαχειριστικό εργαλείο.
 import streamlit as st
 
 pages = [

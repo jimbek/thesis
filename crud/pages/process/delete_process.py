@@ -1,4 +1,4 @@
-# This page allows the user to delete a Process entry by its ID.
+# Η σελίδα επιτρέπει τη διαγραφή ενός Process με βάση το ID του.
 from crud.services.ProcessesService import ProcessesService
 
 import streamlit as st
@@ -12,7 +12,6 @@ service = ProcessesService()
 
 st.header("Διαγραφή Process")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

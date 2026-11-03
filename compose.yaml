@@ -1,11 +1,12 @@
-# We have implemented four services:
-# 1. api: This service runs the API server.
-# 2. ollama: This service runs the Ollama server.
-# 3. streamlit: This service runs the Streamlit admin interface.
+# Οι υπηρεσίες που έχουμε υλοποιήσει είναι:
+# 1. api: Η υπηρεσία αυτή τρέχει το Flask API.
+# 2. ollama: Η υπηρεσία αυτή τρέχει το Ollama.
+# 3. streamlit: Η υπηρεσία αυτή τρέχει το διαχειριστικό περιβάλλον με τη χρήση της βιβλιοθήκης streamlit για το UI.
 
-# 1. Open Docker Desktop and the terminal.
-# 2. Navigate to the directory containing this compose.yaml file.
-# 3. Run the command 'docker compose up'
+# Εκτέλεση:
+# 1. Ανοίγουμε το Docker Desktop και το τερματικό.
+# 2. Πλοηγούμαστε στον φάκελο που περιέχει το αρχείο compose.yaml.
+# 3. Εκτελούμε την εντολή 'docker compose up -d'
 services:
   api:
     build:

@@ -3,7 +3,7 @@ from crud.models.RestAPI import RestAPI
 
 import uuid
 
-# Describes the repository for managing RestAPI-related database operations.
+# Το repository για τη διαχείριση των λειτουργιών βάσης δεδομένων που σχετίζονται με τα RestAPIs.
 class RestAPIsRepository(BaseRepository):
     def __init__(self):
         super().__init__()
@@ -25,17 +25,14 @@ class RestAPIsRepository(BaseRepository):
             INSERT OR IGNORE INTO RestAPIs (id, name, description, domain, openapi_spec) VALUES ("31625a2a-a9a3-41a9-9412-c5705341e071", "Petstore", "This is a sample Pet Store Server based on the OpenAPI 3.0 specification.", "https://petstore3.swagger.io", "/api/v3/openapi.json");
         ''')
     
-    # Retrieves all 'RestAPI' entries.
     def get_all(self):
         data = self.sql_get_all(f'SELECT * FROM RestAPIs')
         return [RestAPI.to_dict(row) for row in data]
 
-    # Retrieves a 'RestAPI' entry by its ID.
     def get_by_id(self, id: str):
         row = self.sql_get_one(f'SELECT * FROM RestAPIs WHERE id = \'{id}\'')
         return RestAPI.to_dict(row) if row else None
     
-    # Adds a new 'RestAPI' entry to the database and returns the ID of the newly created entry.
     def add(self, data: dict):
         data['id'] = str(uuid.uuid4())
 
@@ -50,7 +47,6 @@ class RestAPIsRepository(BaseRepository):
 
         return data['id']
 
-    # Edits an existing 'RestAPI' entry by its ID.
     def edit(self, id: str, data: dict):
         if not id:
             return {'error': 'Λείπει το ID του RestAPI.'}
@@ -72,13 +68,11 @@ class RestAPIsRepository(BaseRepository):
 
         return id
     
-    # Deletes a 'RestAPI' entry by its ID.
     def delete(self, id: str):
         if not self.exists('id', id):
             return {'error': 'Δεν υπάρχει RestAPI με αυτό το ID.'}
         
         self.sql_command(f'DELETE FROM RestAPIs WHERE id = \'{id}\'')
 
-    # Checks if a 'RestAPI' entry exists in the database by one of its properties.
     def exists(self, property_name: str, value: str):
         return self.sql_get_one(f'SELECT id FROM RestAPIs WHERE {property_name} = \'{value}\'') is not None

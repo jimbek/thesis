@@ -1,4 +1,4 @@
-# Describes the model for a RestAPI entity.
+# Περιγράφει το μοντέλο RestAPI.
 class RestAPI:
     def __init__(self, id: str, name: str, description: str, domain: str, openapi_spec: str):
         self.id = id
@@ -7,7 +7,6 @@ class RestAPI:
         self.domain = domain
         self.openapi_spec = openapi_spec
 
-    # Returns a dictionary representation of the RestAPI instance.
     @staticmethod
     def to_dict(row: tuple = None):
         return {
@@ -18,7 +17,6 @@ class RestAPI:
             "openapi_spec": row[4]
         }
 
-    # Returns a dictionary that describes an invalid RestAPI instance.
     @staticmethod
     def to_invalid(data: dict = None):
         message = ""

@@ -1,4 +1,4 @@
-# This page allows the user to delete an AI Agent entry by its ID.
+# Η σελίδα επιτρέπει τη διαγραφή ενός AI Agent με βάση το ID του.
 from crud.services.AgentsService import AgentsService
 
 import streamlit as st
@@ -12,7 +12,6 @@ service = AgentsService()
 
 st.header("Διαγραφή AI Agent")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

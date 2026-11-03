@@ -1,4 +1,4 @@
-# This page allows the user to add a new MCP Server.
+# Η σελίδα επιτρέπει την προσθήκη νέου MCP Server.
 from crud.services.MCPServersService import MCPServersService
 from crud.services.RestAPIsService import RestAPIsService
 from crud.services.WebsitesService import WebsitesService
@@ -11,7 +11,6 @@ websites_service = WebsitesService()
 
 st.header("Δημιουργία MCP Server")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

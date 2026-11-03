@@ -1,19 +1,18 @@
-# Describes the routes for the 'Agents' table.
+# Εδώ δηλώνονται τα routes για τον πίνακα 'Agents'.
 from crud.repos.AgentsRepository import AgentsRepository
 
 from flask import request
 
-# Initialize the AgentsRepository.
 repo = AgentsRepository()
 
-# GET /agents - Get all agents.
+# GET /agents.
 def get_agents():
     try:
         return repo.get_all(), 200
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# GET /agents/<id> - Get an agent by its ID.
+# GET /agents/<id>.
 def get_agent_by_id(id):
     try:
         result = repo.get_by_id(id)
@@ -25,7 +24,7 @@ def get_agent_by_id(id):
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# POST /agents - Create an agent.
+# POST /agents.
 def add_agent():
     try:
         data = request.get_json()
@@ -38,7 +37,7 @@ def add_agent():
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# PUT /agents/<id> - Update an agent by its ID.
+# PUT /agents/<id>.
 def edit_agent(id: str):
     try:
         data = request.get_json()
@@ -51,7 +50,7 @@ def edit_agent(id: str):
     except Exception as error:
         return {'error': f"Internal server error: {error}"}, 500
 
-# DELETE /agents/<id> - Delete an agent by its ID.
+# DELETE /agents/<id>.
 def delete_agent(id):
     try:
         result = repo.delete(id)

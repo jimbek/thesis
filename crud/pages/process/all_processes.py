@@ -1,4 +1,4 @@
-# This page displays the list of existing Processes of an AI Agent.
+# Η σελίδα εμφανίζει τη λίστα των υπαρχόντων Processes ενός AI Agent.
 from crud.services.ProcessesService import ProcessesService
 
 import streamlit as st
@@ -10,7 +10,6 @@ if not agent_id:
 
 service = ProcessesService()
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

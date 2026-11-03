@@ -1,4 +1,4 @@
-# This page allows the user to delete a RestAPI entry by its ID.
+# Η σελίδα επιτρέπει τη διαγραφή ενός REST API με βάση το ID του.
 from crud.services.RestAPIsService import RestAPIsService
 
 import streamlit as st
@@ -12,7 +12,6 @@ service = RestAPIsService()
 
 st.header("Διαγραφή REST API")
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 

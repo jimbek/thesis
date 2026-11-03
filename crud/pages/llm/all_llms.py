@@ -1,11 +1,10 @@
-# This page displays the list of existing LLMs.
+# Η σελίδα εμφανίζει τα διαθέσιμα LLMs.
 from crud.services.LLMsService import LLMsService
 
 import streamlit as st
 
 service = LLMsService()
 
-# Initialize a container for the page content.
 global container
 container = st.container()
 
