@@ -5,7 +5,7 @@ import streamlit as st
 
 id = st.query_params['id'] if st.query_params['id'] else None
 if not id:
-    st.error("Λείπει το ID του REST API")
+    st.error("Λείπει το ID του REST API", divider="gray")
     st.stop()
 
 service = RestAPIsService()

@@ -35,9 +35,9 @@ with container:
         unsafe_allow_html=True,
     )
 
-    container.header("Processes", divider="gray")
+    container.header("Διεργασίες", divider="gray")
     
-    if container.button("New +", type="primary"):
+    if container.button("Νέα +", type="primary"):
         st.switch_page("crud/pages/process/add_process.py", query_params={"agent_id": agent_id})
 
     header = container.columns([3, 1.5])

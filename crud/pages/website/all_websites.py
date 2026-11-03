@@ -27,7 +27,7 @@ with container:
 
     container.header("Websites", divider="gray")
 
-    if container.button("New +", type="primary"):
+    if container.button("Νέο +", type="primary"):
         st.switch_page("crud/pages/website/add_website.py")
 
     header = container.columns([1, 3.5, 1.5, 0.5])

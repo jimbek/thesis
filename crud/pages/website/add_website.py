@@ -5,17 +5,17 @@ import streamlit as st
 
 service = WebsitesService()
 
-st.header("Δημιουργία Website")
+st.header("Δημιουργία Website", divider="gray")
 
 global container
 container = st.container()
 
 with container:
-    name = container.text_input("Όνομα")
-    description = container.text_area("Περιγραφή")
-    domain = container.text_input("Domain")
+    name = container.text_input("Όνομα", placeholder="Εισάγετε το όνομα του Website")
+    description = container.text_area("Περιγραφή", placeholder="Εισάγετε την περιγραφή του Website")
+    domain = container.text_input("Domain", placeholder="https://example.com")
 
-    if container.button("Save"):
+    if container.button("Αποθήκευση"):
         data = {
             "name": name,
             "description": description,

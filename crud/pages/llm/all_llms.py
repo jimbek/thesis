@@ -27,7 +27,7 @@ with container:
 
     container.header("LLMs", divider="gray")
     
-    if container.button("New +", type="primary"):
+    if container.button("Νέο +", type="primary"):
         st.switch_page("crud/pages/llm/add_llm.py")
 
     header = container.columns([2, 0.5])

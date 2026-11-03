@@ -27,7 +27,7 @@ with container:
 
     container.header("MCP Servers", divider="gray")
 
-    if container.button("New +", type="primary"):
+    if container.button("Νέος +", type="primary"):
         st.switch_page("crud/pages/mcpserver/add_mcpserver.py")
 
     header = container.columns([2, 1, 1.5, 0.5])

@@ -10,7 +10,7 @@ if not id:
 
 service = MCPServersService()
 
-st.header("Διαγραφή MCP Server")
+st.header("Διαγραφή MCP Server", divider="gray")
 
 global container
 container = st.container()

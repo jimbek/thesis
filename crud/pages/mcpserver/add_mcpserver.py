@@ -9,13 +9,13 @@ service = MCPServersService()
 rest_apis_service = RestAPIsService()
 websites_service = WebsitesService()
 
-st.header("Δημιουργία MCP Server")
+st.header("Δημιουργία MCP Server", divider="gray")
 
 global container
 container = st.container()
 
 with container:
-    name = container.text_input("Όνομα")
+    name = container.text_input("Όνομα", placeholder="Εισάγετε το όνομα του MCP Server")
 
     all_rest_apis = rest_apis_service.get_all()
     rest_api_id = container.selectbox(
@@ -31,7 +31,7 @@ with container:
         format_func=lambda id: "None" if id is None else next(website['name'] for website in all_websites if website['id'] == id)
     )
 
-    if container.button("Save"):
+    if container.button("Αποθήκευση"):
         data = {
             "name": name,
             "restapi_id": rest_api_id,

@@ -236,7 +236,7 @@ def run_agent():
             "output": output_text
         })
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "Δυστυχώς προέκυψε σφάλμα κατά την εκτέλεση της διεργασίας."}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=payload.get("port"), debug=False)

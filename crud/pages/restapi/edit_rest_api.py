@@ -10,7 +10,7 @@ if not id:
 
 service = RestAPIsService()
 
-st.header("Επεξεργασία REST API")
+st.header("Επεξεργασία REST API", divider="gray")
 
 global container
 container = st.container()
@@ -21,12 +21,14 @@ with container:
         container.error(f"Σφάλμα: {api['error']}")
         st.stop()
     
-    name = container.text_input("Όνομα", value=api.get('name'))
-    description = container.text_area("Περιγραφή", value=api.get('description'))
-    domain = container.text_input("Domain", value=api.get('domain'))
-    openapi_spec = container.text_input("OpenAPI Spec", value=api.get('openapi_spec'))
+    name = container.text_input("Όνομα", value=api.get('name'), placeholder="Εισάγετε το όνομα του REST API")
+    description = container.text_area("Περιγραφή", value=api.get('description'), placeholder="Εισάγετε την περιγραφή του REST API")
+    domain = container.text_input("Domain", value=api.get('domain'), placeholder="https://example.com")
+    openapi_spec = container.text_input("OpenAPI Spec", value=api.get('openapi_spec'), placeholder="/openapi.json")
 
-    if container.button("Save"):
+    container.info("Το Open API version πρέπει αν είναι >= 3.0.")
+
+    if container.button("Αποθήκευση"):
         data = {
             "name": name,
             "description": description,

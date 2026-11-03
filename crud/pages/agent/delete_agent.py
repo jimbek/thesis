@@ -10,7 +10,7 @@ if not id:
 
 service = AgentsService()
 
-st.header("Διαγραφή AI Agent")
+st.header("Διαγραφή AI Agent", divider="gray")
 
 global container
 container = st.container()

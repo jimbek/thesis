@@ -29,7 +29,7 @@ class Agent:
         elif data.get("system_prompt") is None or data.get("system_prompt") == "":
             message = "Λείπει το System Prompt."
         elif data.get("mcp_server_ids") is None or not data.get("mcp_server_ids"):
-            message = "Λείπουν οι MCP Servers."
+            message = "Πρέπει να επιλεγεί τουλάχιστον ένας MCP Server."
 
         if message:
             return {

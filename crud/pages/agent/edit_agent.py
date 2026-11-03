@@ -12,7 +12,7 @@ if not id:
 service = AgentsService()
 mcp_servers_service = MCPServersService()
 
-st.header("Επεξεργασία AI Agent")
+st.header("Επεξεργασία AI Agent", divider="gray")
 
 global container
 container = st.container()
@@ -23,8 +23,8 @@ with container:
         container.error(f"Σφάλμα: {agent['error']}")
         st.stop()
     
-    name = container.text_input("Όνομα", value=agent.get('name') if agent else "")
-    system_prompt = container.text_area("System Prompt", value=agent.get('system_prompt') if agent else "")
+    name = container.text_input("Όνομα", value=agent.get('name') if agent else "", placeholder="Εισάγετε το όνομα του AI Agent")
+    system_prompt = container.text_area("System Prompt", value=agent.get('system_prompt') if agent else "", placeholder="Εισάγετε τα instructions του AI Agent")
 
     all_mcp_servers = mcp_servers_service.get_all()
     mcp_server_ids = container.multiselect(
@@ -34,7 +34,7 @@ with container:
         default=agent.get('mcp_server_ids')
     )
 
-    if container.button("Save"):
+    if container.button("Αποθήκευση"):
         data = {
             "name": name,
             "system_prompt": system_prompt,

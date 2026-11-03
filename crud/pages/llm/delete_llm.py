@@ -10,7 +10,7 @@ if not name:
 
 service = LLMsService()
 
-st.header("Διαγραφή LLM")
+st.header("Διαγραφή LLM", divider="gray")
 
 global container
 container = st.container()
@@ -22,6 +22,7 @@ with container:
         st.stop()
 
     st.html("Είστε σίγουροι ότι θέλετε να διαγράψετε το LLM με όνομα: <b>" + name + "</b>;")
+    st.info("Η διαδικασία διαγραφής του μοντέλου μπορεί να διαρκέσει μερικά δευτερόλεπτα.")
     
     if container.button("Διαγραφή"):
         st.toast("Η διαγραφή του μοντέλου ξεκίνησε, παρακαλώ περιμένετε...", icon=":material/delete:")

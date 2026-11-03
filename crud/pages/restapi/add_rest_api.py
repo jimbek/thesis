@@ -5,18 +5,20 @@ import streamlit as st
 
 service = RestAPIsService()
 
-st.header("Δημιουργία REST API")
+st.header("Δημιουργία REST API", divider="gray")
 
 global container
 container = st.container()
 
 with container:
-    name = container.text_input("Όνομα")
-    description = container.text_area("Περιγραφή")
-    domain = container.text_input("Domain")
-    openapi_spec = container.text_input("OpenAPI Spec")
+    name = container.text_input("Όνομα", placeholder="Εισάγετε το όνομα του REST API")
+    description = container.text_area("Περιγραφή", placeholder="Εισάγετε την περιγραφή του REST API")
+    domain = container.text_input("Domain", placeholder="https://example.com")
+    openapi_spec = container.text_input("OpenAPI Spec", placeholder="/openapi.json")
 
-    if container.button("Save"):
+    container.info("Το Open API version πρέπει αν είναι >= 3.0.")
+
+    if container.button("Αποθήκευση"):
         data = {
             "name": name,
             "description": description,

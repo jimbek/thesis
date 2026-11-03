@@ -14,7 +14,7 @@ service = ProcessesService()
 agent_service = AgentsService()
 llms_service = LLMsService()
 
-st.header("Προσθήκη Process")
+st.header("Προσθήκη Διεργασίας", divider="gray")
 
 global container
 container = st.container()
@@ -25,7 +25,7 @@ with container:
         container.error(f"Σφάλμα: {agent['error']}")
         st.stop()
     
-    port = container.number_input("Port", min_value=8000)
+    port = container.number_input("Port", value=8001)
 
     all_llms = llms_service.get_all()
     llm = container.selectbox(
@@ -34,10 +34,17 @@ with container:
         format_func=lambda name: "None" if name is None else next(llm for llm in all_llms if llm == name)
     )
 
-    if container.button("Save"):
+    container.info('''
+        Η διαδικασία εκκίνησης μπορεί να διαρκέσει λίγα δευτερόλεπτα.
+        Ειδικά για την περίπτωση που χρησιμοποιείται ιστοσελίδα, υπάρχει περίπτωση να προκύψει σφάλμα λόγω μπλοκαρίσματος από τον πάροχο.
+    ''')
+
+    if container.button("Εκτέλεση"):
         if not llm:
             st.toast("Πρέπει να επιλέξετε ένα LLM.")
             st.stop()
+
+        st.toast("Η διεργασία ξεκινά, παρακαλώ περιμένετε...")
         
         payload = {
             "port": port,

@@ -10,7 +10,7 @@ if not id:
 
 service = WebsitesService()
 
-st.header("Επεξεργασία Website")
+st.header("Επεξεργασία Website", divider="gray")
 
 global container
 container = st.container()
@@ -21,11 +21,11 @@ with container:
         container.error(f"Σφάλμα: {website['error']}")
         st.stop()
     
-    name = container.text_input("Όνομα", value=website.get('name'))
-    description = container.text_area("Περιγραφή", value=website.get('description'))
-    domain = container.text_input("Domain", value=website.get('domain'))
+    name = container.text_input("Όνομα", value=website.get('name'), placeholder="Εισάγετε το όνομα του Website")
+    description = container.text_area("Περιγραφή", value=website.get('description'), placeholder="Εισάγετε την περιγραφή του Website")
+    domain = container.text_input("Domain", value=website.get('domain'), placeholder="https://example.com")
 
-    if container.button("Save"):
+    if container.button("Αποθήκευση"):
         data = {
             "name": name,
             "description": description,

@@ -14,7 +14,7 @@ service = MCPServersService()
 rest_apis_service = RestAPIsService()
 websites_service = WebsitesService()
 
-st.header("Επεξεργασία MCP Server")
+st.header("Επεξεργασία MCP Server", divider="gray")
 
 global container
 container = st.container()
@@ -25,7 +25,7 @@ with container:
         container.error(f"Σφάλμα: {mcpserver['error']}")
         st.stop()
     
-    name = container.text_input("Όνομα", value=mcpserver.get('name') if mcpserver else "")
+    name = container.text_input("Όνομα", value=mcpserver.get('name') if mcpserver else "", placeholder="Εισάγετε το όνομα του MCP Server")
 
     all_rest_apis = rest_apis_service.get_all()
     rest_api_id = container.selectbox(
@@ -43,7 +43,7 @@ with container:
         index = 0 if mcpserver.get('type') == "Rest API" else ([None] + [website['id'] for website in all_websites]).index(mcpserver.get('website_id'))
     )
 
-    if container.button("Save"):
+    if container.button("Αποθήκευση"):
         data = {
             "name": name,
             "restapi_id": rest_api_id,

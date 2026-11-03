@@ -29,7 +29,7 @@ class MCPServer:
         elif data.get("name") is None or data.get("name") == "":
             message = "Λείπει το Όνομα."
         elif (data.get("restapi_id") is None or data.get("restapi_id") == "") and (data.get("website_id") is None or data.get("website_id") == ""):
-            message = "Πρέπει να παρέχεται είτε REST API είτε Website."
+            message = "Πρέπει να επιλέξετε είτε REST API είτε Website."
         elif data.get("restapi_id") is not None and data.get("restapi_id") != "" and data.get("website_id") is not None and data.get("website_id") != "":
             message = "Δεν μπορεί να παρέχονται ταυτόχρονα REST API και Website."
 

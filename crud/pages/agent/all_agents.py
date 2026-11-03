@@ -27,7 +27,7 @@ with container:
 
     container.header("AI Agents", divider="gray")
 
-    if container.button("New +", type="primary"):
+    if container.button("Νέος +", type="primary"):
         st.switch_page("crud/pages/agent/add_agent.py")
 
     header = container.columns([1.5, 3.5, 1.5, 0.5])

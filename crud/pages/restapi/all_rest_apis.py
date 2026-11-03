@@ -27,7 +27,7 @@ with container:
 
     container.header("Rest APIs", divider="gray")
     
-    if container.button("New +", type="primary"):
+    if container.button("Νέο +", type="primary"):
         st.switch_page("crud/pages/restapi/add_rest_api.py")
 
     header = container.columns([1, 2.5, 1.5, 1.5, 0.5])

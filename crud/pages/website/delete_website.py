@@ -10,7 +10,7 @@ if not id:
 
 service = WebsitesService()
 
-st.header("Διαγραφή Website")
+st.header("Διαγραφή Website", divider="gray")
 
 global container
 container = st.container()

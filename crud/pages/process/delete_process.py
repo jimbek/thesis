@@ -10,7 +10,7 @@ if not id:
 
 service = ProcessesService()
 
-st.header("Διαγραφή Process")
+st.header("Διαγραφή Διεργασίας", divider="gray")
 
 global container
 container = st.container()
@@ -21,7 +21,7 @@ with container:
         container.error(f"Σφάλμα: {entry['error']}")
         st.stop()
 
-    container.html("Είστε σίγουροι ότι θέλετε να διαγράψετε το Process με port: <b>" + str(entry['port']) + "</b>;")
+    container.html("Είστε σίγουροι ότι θέλετε να διαγράψετε τη διεργασία με port: <b>" + str(entry['port']) + "</b>;")
     
     if container.button("Διαγραφή"):
         if entry.get('pid'):
